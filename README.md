@@ -1,4 +1,8 @@
-# Mail Defender 🛡️✉️
+<p align="center">
+  <img src="./logo.svg" alt="Mail Defender Logo" width="128" height="128">
+</p>
+
+<h1 align="center">Mail Defender</h1>
 
 **Mail Defender** is a comprehensive, production-ready web application for analyzing suspicious emails and detecting phishing attempts. Built with a React frontend and an Express/Node.js backend, it parses raw email headers and bodies, extracts Indicators of Compromise (IOCs), and provides actionable threat intelligence through integrations with VirusTotal, AbuseIPDB, and DeepSeek AI.
 
