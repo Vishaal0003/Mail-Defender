@@ -6,6 +6,7 @@ const rootDir = process.cwd();
 const viteBin = path.join(rootDir, "node_modules", "vite", "bin", "vite.js");
 const backendDir = path.join(rootDir, "backend");
 const backendEntry = path.join(backendDir, "server.js");
+const frontendDir = path.join(rootDir, "frontend");
 
 const processes = [];
 
@@ -78,4 +79,4 @@ start("frontend", process.execPath, [
   "--port",
   "8080",
   "--open",
-]);
+], { cwd: frontendDir });
