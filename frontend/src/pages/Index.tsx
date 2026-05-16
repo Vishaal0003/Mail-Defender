@@ -853,6 +853,12 @@ ${recommendedActions}`;
             </div>
           </div>
         </section>
+
+        <footer className="w-full pb-8 pt-4 text-center">
+          <p className={`${isLightMode ? "text-black" : "text-white"} font-bold`}>
+            AI can make mistakes, Please double check reponses
+          </p>
+        </footer>
       </div>
     </main>
   );
