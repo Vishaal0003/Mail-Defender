@@ -1,0 +1,194 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="980" viewBox="0 0 1500 980">
+  <defs>
+    <style>
+      .bg { fill: #f7faff; }
+      .boundary { fill: #ffffff; stroke: #0b2545; stroke-width: 2.4; rx: 18; }
+      .title { font: 700 30px Arial, Helvetica, sans-serif; fill: #0b2545; }
+      .subtitle { font: 400 16px Arial, Helvetica, sans-serif; fill: #5b677a; }
+      .actor-label { font: 700 17px Arial, Helvetica, sans-serif; fill: #0b2545; text-anchor: middle; }
+      .actor-small { font: 400 13px Arial, Helvetica, sans-serif; fill: #5b677a; text-anchor: middle; }
+      .actor-line { stroke: #0b2545; stroke-width: 2.6; fill: none; stroke-linecap: round; }
+      .usecase { fill: #eaf2fb; stroke: #1f5a91; stroke-width: 2; }
+      .usecase-future { fill: #fff7e6; stroke: #b7791f; stroke-width: 2; stroke-dasharray: 8 5; }
+      .usecase-text { font: 700 15px Arial, Helvetica, sans-serif; fill: #0b2545; text-anchor: middle; }
+      .usecase-small { font: 400 12px Arial, Helvetica, sans-serif; fill: #5b677a; text-anchor: middle; }
+      .assoc { stroke: #53657a; stroke-width: 1.7; fill: none; }
+      .include { stroke: #1f5a91; stroke-width: 1.5; stroke-dasharray: 7 5; fill: none; marker-end: url(#arrow); }
+      .note { fill: #f8fbff; stroke: #c9d4e2; stroke-width: 1.4; rx: 12; }
+      .note-title { font: 700 13px Arial, Helvetica, sans-serif; fill: #0b2545; }
+      .note-text { font: 400 13px Arial, Helvetica, sans-serif; fill: #334155; }
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto" markerUnits="strokeWidth">
+      <path d="M 0 0 L 10 4 L 0 8 z" fill="#1f5a91"/>
+    </marker>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1500" height="980"/>
+  <text class="title" x="750" y="54" text-anchor="middle">Mail Defender - UML Use Case Diagram</text>
+  <text class="subtitle" x="750" y="82" text-anchor="middle">Suspicious email analysis, threat intelligence enrichment, AI summary, and reporting workflow</text>
+
+  <!-- System boundary -->
+  <rect class="boundary" x="285" y="120" width="930" height="760"/>
+  <text class="title" x="750" y="160" text-anchor="middle" font-size="24">Mail Defender System</text>
+
+  <!-- Actors: left -->
+  <g transform="translate(120 205)">
+    <circle class="actor-line" cx="0" cy="0" r="18"/>
+    <path class="actor-line" d="M0 18 L0 76 M-38 42 L38 42 M0 76 L-30 126 M0 76 L30 126"/>
+    <text class="actor-label" x="0" y="160">Employee</text>
+    <text class="actor-small" x="0" y="180">Reporter</text>
+  </g>
+
+  <g transform="translate(120 490)">
+    <circle class="actor-line" cx="0" cy="0" r="18"/>
+    <path class="actor-line" d="M0 18 L0 76 M-38 42 L38 42 M0 76 L-30 126 M0 76 L30 126"/>
+    <text class="actor-label" x="0" y="160">Security</text>
+    <text class="actor-small" x="0" y="180">Analyst</text>
+  </g>
+
+  <g transform="translate(120 745)">
+    <circle class="actor-line" cx="0" cy="0" r="18"/>
+    <path class="actor-line" d="M0 18 L0 76 M-38 42 L38 42 M0 76 L-30 126 M0 76 L30 126"/>
+    <text class="actor-label" x="0" y="160">IT Helpdesk</text>
+    <text class="actor-small" x="0" y="180">Admin</text>
+  </g>
+
+  <!-- Actors: right -->
+  <g transform="translate(1375 350)">
+    <circle class="actor-line" cx="0" cy="0" r="18"/>
+    <path class="actor-line" d="M0 18 L0 76 M-38 42 L38 42 M0 76 L-30 126 M0 76 L30 126"/>
+    <text class="actor-label" x="0" y="160">Threat Intel</text>
+    <text class="actor-small" x="0" y="180">Services</text>
+  </g>
+
+  <g transform="translate(1375 600)">
+    <circle class="actor-line" cx="0" cy="0" r="18"/>
+    <path class="actor-line" d="M0 18 L0 76 M-38 42 L38 42 M0 76 L-30 126 M0 76 L30 126"/>
+    <text class="actor-label" x="0" y="160">AI Analysis</text>
+    <text class="actor-small" x="0" y="180">Service</text>
+  </g>
+
+  <g transform="translate(1375 805)">
+    <circle class="actor-line" cx="0" cy="0" r="18"/>
+    <path class="actor-line" d="M0 18 L0 76 M-38 42 L38 42 M0 76 L-30 126 M0 76 L30 126"/>
+    <text class="actor-label" x="0" y="160">System</text>
+    <text class="actor-small" x="0" y="180">Admin</text>
+  </g>
+
+  <!-- Main use cases -->
+  <g>
+    <ellipse class="usecase" cx="430" cy="230" rx="114" ry="42"/>
+    <text class="usecase-text" x="430" y="226">Submit</text>
+    <text class="usecase-text" x="430" y="245">Suspicious Email</text>
+  </g>
+
+  <g>
+    <ellipse class="usecase" cx="735" cy="230" rx="108" ry="42"/>
+    <text class="usecase-text" x="735" y="226">Analyze Email</text>
+    <text class="usecase-small" x="735" y="245">start investigation</text>
+  </g>
+
+  <g>
+    <ellipse class="usecase" cx="1040" cy="230" rx="102" ry="42"/>
+    <text class="usecase-text" x="1040" y="226">Export / Copy</text>
+    <text class="usecase-text" x="1040" y="245">Report</text>
+  </g>
+
+  <!-- Included use cases -->
+  <g>
+    <ellipse class="usecase" cx="430" cy="350" rx="122" ry="40"/>
+    <text class="usecase-text" x="430" y="346">Upload .eml / .txt</text>
+    <text class="usecase-small" x="430" y="364">or paste headers/body</text>
+  </g>
+
+  <g>
+    <ellipse class="usecase" cx="600" cy="350" rx="103" ry="40"/>
+    <text class="usecase-text" x="600" y="346">Parse Headers</text>
+    <text class="usecase-text" x="600" y="364">and Body</text>
+  </g>
+
+  <g>
+    <ellipse class="usecase" cx="790" cy="350" rx="111" ry="40"/>
+    <text class="usecase-text" x="790" y="346">Check SPF, DKIM,</text>
+    <text class="usecase-text" x="790" y="364">DMARC</text>
+  </g>
+
+  <g>
+    <ellipse class="usecase" cx="1000" cy="350" rx="106" ry="40"/>
+    <text class="usecase-text" x="1000" y="346">Extract IOCs</text>
+    <text class="usecase-small" x="1000" y="364">URLs, IPs, hashes</text>
+  </g>
+
+  <g>
+    <ellipse class="usecase" cx="520" cy="495" rx="116" ry="40"/>
+    <text class="usecase-text" x="520" y="491">Hash and Review</text>
+    <text class="usecase-text" x="520" y="509">Attachments</text>
+  </g>
+
+  <g>
+    <ellipse class="usecase" cx="760" cy="495" rx="116" ry="40"/>
+    <text class="usecase-text" x="760" y="491">Enrich Indicators</text>
+    <text class="usecase-small" x="760" y="509">VirusTotal, AbuseIPDB</text>
+  </g>
+
+  <g>
+    <ellipse class="usecase" cx="1000" cy="495" rx="108" ry="40"/>
+    <text class="usecase-text" x="1000" y="491">Calculate</text>
+    <text class="usecase-text" x="1000" y="509">Risk Score</text>
+  </g>
+
+  <g>
+    <ellipse class="usecase" cx="610" cy="640" rx="112" ry="40"/>
+    <text class="usecase-text" x="610" y="636">Generate AI</text>
+    <text class="usecase-text" x="610" y="654">Summary</text>
+  </g>
+
+  <g>
+    <ellipse class="usecase" cx="850" cy="640" rx="118" ry="40"/>
+    <text class="usecase-text" x="850" y="636">Review Evidence</text>
+    <text class="usecase-small" x="850" y="654">dashboard and findings</text>
+  </g>
+
+  <!-- Future use cases -->
+  <g>
+    <ellipse class="usecase-future" cx="645" cy="785" rx="118" ry="42"/>
+    <text class="usecase-text" x="645" y="780">Manage Cases</text>
+    <text class="usecase-small" x="645" y="800">future upgrade</text>
+  </g>
+
+  <g>
+    <ellipse class="usecase-future" cx="930" cy="785" rx="130" ry="42"/>
+    <text class="usecase-text" x="930" y="780">Manage Users, Rules</text>
+    <text class="usecase-small" x="930" y="800">and integrations</text>
+  </g>
+
+  <!-- Actor associations -->
+  <path class="assoc" d="M158 247 L316 230"/>
+  <path class="assoc" d="M158 532 L627 230"/>
+  <path class="assoc" d="M158 532 L732 640"/>
+  <path class="assoc" d="M158 532 L938 230"/>
+  <path class="assoc" d="M158 787 L316 230"/>
+  <path class="assoc" d="M158 787 L938 230"/>
+  <path class="assoc" d="M1337 392 L876 495"/>
+  <path class="assoc" d="M1337 642 L722 640"/>
+  <path class="assoc" d="M1337 847 L1060 785"/>
+  <path class="assoc" d="M1337 847 L763 785"/>
+
+  <!-- Include relationships. Label explained in legend to keep the diagram readable. -->
+  <path class="include" d="M430 272 L430 310"/>
+  <path class="include" d="M705 270 L630 320"/>
+  <path class="include" d="M745 272 L780 310"/>
+  <path class="include" d="M790 264 L955 325"/>
+  <path class="include" d="M690 266 L548 461"/>
+  <path class="include" d="M1000 390 L805 468"/>
+  <path class="include" d="M870 495 L892 495"/>
+  <path class="include" d="M962 526 L705 615"/>
+  <path class="include" d="M988 528 L890 610"/>
+  <path class="include" d="M958 615 L1010 270"/>
+
+  <!-- Legend -->
+  <rect class="note" x="350" y="900" width="800" height="50"/>
+  <text class="note-title" x="370" y="922">Legend:</text>
+  <text class="note-text" x="425" y="922">Solid lines show actor interaction. Dashed blue arrows show included system behavior.</text>
+  <text class="note-text" x="370" y="942">Dashed gold use cases are future company-level upgrades beyond the current MVP scope.</text>
+</svg>

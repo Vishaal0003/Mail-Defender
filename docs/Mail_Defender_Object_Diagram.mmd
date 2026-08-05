@@ -1,0 +1,97 @@
+classDiagram
+direction LR
+
+class "analyst1 : User" as analyst1 {
+  name = "Security Analyst"
+  role = "Analyst"
+  canAnalyze = true
+}
+
+class "submission1 : EmailSubmission" as submission1 {
+  source = ".eml upload"
+  subject = "Verify Your Account Now"
+  from = "support@fake-bank-secure.com"
+  bodyContains = "login / verify"
+}
+
+class "header1 : HeaderDetails" as header1 {
+  fromDomain = "fake-bank-secure.com"
+  replyTo = "helpdesk@random-mail.xyz"
+  originatingIp = "185.199.110.153"
+  replyMismatch = true
+}
+
+class "auth1 : AuthCheck" as auth1 {
+  spf = "fail"
+  dkim = "unknown"
+  dmarc = "fail"
+  tone = "danger"
+}
+
+class "url1 : Indicator" as url1 {
+  type = "URL"
+  value = "https://secure-login.xyz/verify"
+  disposition = "Suspicious"
+}
+
+class "ip1 : Indicator" as ip1 {
+  type = "IP"
+  value = "185.199.110.153"
+  abuseScore = 35
+  disposition = "Suspicious"
+}
+
+class "attachment1 : Attachment" as attachment1 {
+  filename = "invoice.pdf"
+  contentType = "application/pdf"
+  sha256 = "a7f3...9c2d"
+}
+
+class "vt1 : VirusTotalReport" as vt1 {
+  indicator = url1
+  malicious = 2
+  suspicious = 4
+}
+
+class "abuse1 : AbuseIPDBReport" as abuse1 {
+  ipAddress = ip1
+  countryCode = "US"
+  confidence = 35
+}
+
+class "ai1 : AIAnalysis" as ai1 {
+  attackType = "Credential Harvesting"
+  finding = "Fake login portal"
+  action = "Do not click"
+}
+
+class "analysis1 : AnalysisResult" as analysis1 {
+  verdict = "High Risk"
+  score = 82
+  attackType = "Credential Harvesting"
+}
+
+class "report1 : Report" as report1 {
+  format = "PDF"
+  status = "Generated"
+  title = "Security Analysis"
+}
+
+class "case1 : InvestigationCase" as case1 {
+  severity = "High"
+  status = "Open"
+  owner = analyst1
+}
+
+analyst1 --> submission1 : submits
+submission1 --> header1 : has
+submission1 --> auth1 : has
+submission1 --> url1 : extracts
+submission1 --> ip1 : extracts
+submission1 --> attachment1 : contains
+submission1 --> analysis1 : produces
+url1 --> vt1 : enriched by
+ip1 --> abuse1 : enriched by
+analysis1 --> ai1 : summarized by
+analysis1 --> report1 : exported as
+analysis1 --> case1 : may open future case

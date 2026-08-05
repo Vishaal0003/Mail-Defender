@@ -18,6 +18,13 @@ import {
   TriangleAlert,
   XCircle,
   Paperclip,
+  ShieldCheck,
+  Terminal,
+  ExternalLink,
+  Lock,
+  Cpu,
+  RefreshCw,
+  Zap
 } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -25,9 +32,9 @@ import { Button } from "../components/ui/button";
 import { Textarea } from "../components/ui/textarea";
 
 const tagClass: Record<string, string> = {
-  Malicious: "border-danger/35 bg-danger/10 text-danger",
-  Suspicious: "border-warning/35 bg-warning/12 text-warning",
-  Clean: "border-success/35 bg-success/12 text-success",
+  Malicious: "border-danger/35 bg-danger/10 text-danger shadow-[0_0_12px_rgba(239,68,68,0.15)]",
+  Suspicious: "border-warning/35 bg-warning/12 text-warning shadow-[0_0_12px_rgba(245,158,11,0.15)]",
+  Clean: "border-success/35 bg-success/12 text-success shadow-[0_0_12px_rgba(34,197,94,0.15)]",
   Unknown: "border-border/80 bg-muted text-muted-foreground",
 };
 
@@ -56,6 +63,34 @@ const fallbackScoreTags = [
   ["Urgent Tone", "Suspicious"],
   ["Impersonation", "Clean"],
 ] as const;
+
+const SAMPLE_EMAIL_HEADERS = `Received: from mail.suspicious-domain.com (unknown [192.168.1.100])
+\tby mx.google.com with ESMTPS id x1234567890so
+\tfor <target@company.com>; Wed, 05 Aug 2026 10:00:00 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fake-bank.net;
+Authentication-Results: mx.google.com;
+\tspf=fail (google.com: domain of admin@fake-bank.net does not designate 192.168.1.100 as permitted sender) smtp.mailfrom=admin@fake-bank.net;
+\tdkim=fail header.i=@fake-bank.net;
+From: "Security Urgent Notification" <admin@fake-bank.net>
+To: target@company.com
+Subject: URGENT: Your Account Has Been Locked - Immediate Verification Required
+Date: Wed, 05 Aug 2026 10:00:00 -0700
+X-Priority: 1 (Highest)
+Reply-To: phisher-collector@login-verify-update.org`;
+
+const SAMPLE_EMAIL_BODY = `Dear Customer,
+
+We detected unauthorized login attempts on your account from an unrecognized IP address.
+For your safety, your account features have been temporarily restricted.
+
+Please verify your credentials immediately to restore full access:
+http://login-verify-update.org/secure-auth/login.php
+
+If you do not complete verification within 24 hours, your account will be permanently suspended.
+
+Thank you,
+Security Team
+Support ID: SEC-994827`;
 
 const getStoredTheme = () => {
   try {
@@ -284,6 +319,11 @@ const Index = () => {
     reader.readAsText(file);
   };
 
+  const loadSampleData = () => {
+    setEmailHeaders(SAMPLE_EMAIL_HEADERS);
+    setEmailBody(SAMPLE_EMAIL_BODY);
+  };
+
   const onDragOver = (e: React.DragEvent) => {
     e.preventDefault();
     setIsDragging(true);
@@ -370,7 +410,6 @@ ${recommendedActions}`;
     URL.revokeObjectURL(url);
   };
 
-
   const handleAnalyze = async () => {
     if (!emailHeaders && !emailBody) return;
 
@@ -412,128 +451,242 @@ ${recommendedActions}`;
     : fallbackScoreTags;
 
   return (
-    <main className="min-h-screen bg-background text-foreground">
-      <div className="page-shell">
-        <div className="ambient-orb ambient-orb-left" />
-        <div className="ambient-orb ambient-orb-right" />
+    <div className="min-h-screen bg-background text-foreground flex flex-col justify-between selection:bg-primary/30 selection:text-primary">
+      <div className="page-shell flex-1">
+        {/* Background Ambient Orbs */}
+        <div className="ambient-orb ambient-orb-left pointer-events-none" />
+        <div className="ambient-orb ambient-orb-right pointer-events-none" />
 
-        <section className="mx-auto flex w-full max-w-[1500px] flex-col gap-6 px-4 py-5 md:px-8 md:py-8 xl:px-12">
-          <header className="hero-panel app-header">
+        {/* Sticky Premium Navbar Header */}
+        <header className="sticky top-0 z-50 w-full border-b border-border/80 bg-background/80 backdrop-blur-xl transition-all duration-300">
+          <div className="mx-auto flex max-w-[1500px] items-center justify-between px-4 py-3.5 md:px-8 xl:px-12">
+            {/* Brand Logo & Title */}
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-primary/40 bg-primary/10 text-primary shadow-[0_0_20px_rgba(56,189,248,0.2)]">
+                <ShieldCheck className="h-6 w-6" />
+              </div>
+              <div className="flex flex-col">
+                <div className="flex items-center gap-2">
+                  <span className="font-display text-lg font-bold tracking-tight text-foreground">
+                    MAIL <span className="text-primary">DEFENDER</span>
+                  </span>
+                  <span className="rounded-md border border-primary/30 bg-primary/10 px-1.5 py-0.5 text-[10px] font-mono font-semibold uppercase tracking-wider text-primary">
+                    PRO
+                  </span>
+                </div>
+                <span className="text-[11px] text-muted-foreground hidden sm:inline-block">
+                  AI Threat Detection & Header Forensic Engine
+                </span>
+              </div>
+            </div>
+
+            {/* Live Status Indicators */}
+            <div className="hidden lg:flex items-center gap-6 text-xs text-muted-foreground">
+              <div className="flex items-center gap-2 border-r border-border/80 pr-6">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                </span>
+                <span className="font-medium text-foreground">Engine Online</span>
+              </div>
+              <div className="flex items-center gap-2 border-r border-border/80 pr-6">
+                <Cpu className="h-3.5 w-3.5 text-primary" />
+                <span>AI Core: <strong className="text-foreground">Gemini 2.5 Flash</strong></span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Lock className="h-3.5 w-3.5 text-info" />
+                <span>VirusTotal API: <strong className="text-foreground font-mono">Ready</strong></span>
+              </div>
+            </div>
+
+            {/* Top Bar Actions */}
+            <div className="flex items-center gap-2.5">
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={loadSampleData}
+                className="hidden sm:inline-flex h-9 px-3 text-xs gap-1.5 border-border/80 bg-card/60 hover:bg-accent hover:border-primary/40"
+              >
+                <Zap className="h-3.5 w-3.5 text-amber-400" />
+                Load Sample
+              </Button>
+
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={handleReset}
+                className="h-9 px-3 text-xs gap-1.5 border-border/80 bg-card/60 hover:bg-accent"
+              >
+                <RotateCcw className="h-3.5 w-3.5" />
+                Reset
+              </Button>
+
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => setIsLightMode((current) => !current)}
+                className="h-9 w-9 p-0 border-border/80 bg-card/60 hover:bg-accent"
+                aria-label="Toggle Theme"
+              >
+                {isLightMode ? <Moon className="h-4 w-4 text-slate-700" /> : <Sun className="h-4 w-4 text-amber-300" />}
+              </Button>
+            </div>
+          </div>
+        </header>
+
+        {/* Hero Section Banner */}
+        <section className="mx-auto max-w-[1500px] px-4 pt-6 md:px-8 xl:px-12">
+          <div className="hero-panel app-header flex flex-col justify-center rounded-2xl border border-border/80 bg-gradient-to-r from-card via-background to-card p-6 md:p-8 shadow-2xl relative overflow-hidden">
             <div className="hero-noise" />
-
-            <div className="relative w-full">
-              <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
-                <div className="max-w-2xl space-y-4">
+            <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+              <div className="space-y-3 max-w-3xl">
+                <div className="flex flex-wrap items-center gap-2.5">
                   <div className="workspace-pill">
                     <span className="status-dot bg-primary text-primary" />
-                    Security Investigation Workspace
+                    Security Analyst Terminal
                   </div>
-
-                  <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
-                    <div className="hero-emblem">
-                      <Shield className="h-5 w-5" />
-                    </div>
-                    <div className="space-y-2.5">
-                      <h1 className="max-w-2xl text-3xl font-semibold leading-none tracking-[-0.04em] text-foreground md:text-5xl lg:text-[3.35rem]">
-                        MAIL DEFENDER
-                      </h1>
-                      <p className="max-w-2xl text-sm leading-6 text-muted-foreground md:text-[15px]">
-                        Paste headers, inspect suspicious signals, and generate an AI threat report inside a workspace
-                        that feels curated instead of generic.
-                      </p>
-                    </div>
-                  </div>
+                  <span className="inline-flex items-center gap-1 text-[11px] font-mono text-muted-foreground bg-muted/50 px-2.5 py-1 rounded-full border border-border/60">
+                    <Terminal className="h-3 w-3 text-primary" /> EML / RFC 822 Forensics
+                  </span>
                 </div>
+                <h1 className="text-2xl font-bold tracking-tight text-foreground md:text-4xl lg:text-4xl font-display">
+                  Analyze Suspicious Emails with <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-info to-purple-400">AI & VirusTotal</span>
+                </h1>
+                <p className="text-sm leading-relaxed text-muted-foreground md:text-base max-w-2xl">
+                  Inspect raw headers, extract IPs/domains, evaluate SPF/DKIM authentication, and produce comprehensive security threat assessments in real-time.
+                </p>
+              </div>
 
-                <div className="flex flex-wrap gap-3 lg:right">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setIsLightMode((current) => !current)}
-                    className="h-11 px-5"
-                    aria-pressed={isLightMode}
-                  >
-                    {isLightMode ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
-                    {isLightMode ? "Light Mode" : "Dark Mode"}
-                  </Button>
-                  <Button type="button" variant="outline" size="sm" onClick={handleReset} className="h-11 px-5">
-                    <RotateCcw className="h-4 w-4" />
-                    Reset
-                  </Button>
+              {/* Quick stats pills */}
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 shrink-0">
+                <div className="flex flex-col items-center justify-center p-3 rounded-xl border border-border/60 bg-card/40 backdrop-blur-md">
+                  <span className="text-xs text-muted-foreground">Auth Checks</span>
+                  <span className="text-sm font-semibold text-primary font-mono mt-0.5">SPF • DKIM</span>
+                </div>
+                <div className="flex flex-col items-center justify-center p-3 rounded-xl border border-border/60 bg-card/40 backdrop-blur-md">
+                  <span className="text-xs text-muted-foreground">Threat Intel</span>
+                  <span className="text-sm font-semibold text-info font-mono mt-0.5">VirusTotal API</span>
+                </div>
+                <div className="col-span-2 sm:col-span-1 flex flex-col items-center justify-center p-3 rounded-xl border border-border/60 bg-card/40 backdrop-blur-md">
+                  <span className="text-xs text-muted-foreground">Export Format</span>
+                  <span className="text-sm font-semibold text-emerald-400 font-mono mt-0.5">PDF & Text</span>
                 </div>
               </div>
             </div>
-          </header>
+          </div>
+        </section>
 
-          <div className="grid gap-6 xl:grid-cols-[1.45fr_1fr]">
+        {/* Main Work Area */}
+        <section className="mx-auto flex w-full max-w-[1500px] flex-col gap-6 px-4 py-6 md:px-8 xl:px-12">
+          <div className="grid gap-6 xl:grid-cols-[1.4fr_1fr]">
+            
+            {/* Left Column: Intake & Header Breakdown & Report */}
             <div className="space-y-6">
+              
+              {/* Intake Section */}
               <section
-                className={`investigation-card investigation-card-strong relative overflow-hidden ${isDragging ? "ring-2 ring-primary/60" : ""}`}
+                className={`investigation-card investigation-card-strong relative overflow-hidden border border-border/80 bg-card/90 shadow-xl backdrop-blur-xl ${isDragging ? "ring-2 ring-primary/60 border-primary" : ""}`}
                 onDragOver={onDragOver}
                 onDragLeave={onDragLeave}
                 onDrop={onDrop}
               >
-                <div className="section-topline">
-                  <span className={sectionIconClass}>
-                    <ScanSearch className="h-5 w-5" />
-                  </span>
-                  <div className="space-y-1">
-                    <p className="section-kicker">Input Section</p>
-                    <h2 className={cardTitleClass}>Raw message intake</h2>
+                <div className="section-topline flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <span className={sectionIconClass}>
+                      <ScanSearch className="h-5 w-5 text-primary" />
+                    </span>
+                    <div>
+                      <p className="section-kicker text-xs uppercase tracking-widest text-muted-foreground font-semibold">Raw Message Input</p>
+                      <h2 className={cardTitleClass}>Intake & Ingestion</h2>
+                    </div>
                   </div>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={loadSampleData}
+                    className="text-xs text-primary hover:text-primary hover:bg-primary/10 gap-1.5"
+                  >
+                    <Zap className="h-3.5 w-3.5" /> Sample Email
+                  </Button>
                 </div>
 
-                <p className="max-w-2xl text-sm leading-7 text-muted-foreground">
-                  Drop an `.eml` file or paste the raw material manually. The structure stays the same, but the work
-                  area now feels more deliberate and easier to scan.
+                <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">
+                  Drag & drop an <code className="text-primary bg-primary/10 px-1.5 py-0.5 rounded font-mono">.eml</code> file or paste headers & body manually below.
                 </p>
 
                 {isDragging && (
-                  <div className="absolute inset-0 z-20 flex items-center justify-center rounded-[26px] border border-primary/30 bg-background/85 backdrop-blur-xl">
+                  <div className="absolute inset-0 z-20 flex items-center justify-center rounded-[26px] border-2 border-dashed border-primary bg-background/90 backdrop-blur-xl">
                     <div className="flex flex-col items-center gap-3 text-center">
-                      <div className="flex h-20 w-20 items-center justify-center rounded-full border border-primary/30 bg-primary/12 text-primary">
+                      <div className="flex h-16 w-16 items-center justify-center rounded-full border border-primary/40 bg-primary/15 text-primary animate-bounce">
                         <Mail className="h-8 w-8" />
                       </div>
-                      <p className="text-xl font-semibold tracking-[-0.03em] text-foreground">Drop your `.eml` file here</p>
-                      <p className="text-sm text-muted-foreground">We'll split headers and body automatically.</p>
+                      <p className="text-lg font-semibold text-foreground">Drop `.eml` file here</p>
+                      <p className="text-xs text-muted-foreground">Headers & body will be auto-extracted.</p>
                     </div>
                   </div>
                 )}
 
                 <div className="grid gap-4">
                   <div className="field-shell">
-                    <label className="field-label">Raw Email Headers</label>
+                    <div className="flex items-center justify-between">
+                      <label className="field-label text-xs font-semibold tracking-wider text-muted-foreground uppercase">Raw Email Headers</label>
+                      {emailHeaders && (
+                        <span className="text-[11px] font-mono text-emerald-400">{emailHeaders.split('\n').length} lines</span>
+                      )}
+                    </div>
                     <Textarea
                       value={emailHeaders}
                       onChange={(e) => setEmailHeaders(e.target.value)}
-                      className="workspace-textarea font-mono"
-                      placeholder="Paste raw email headers here..."
+                      className="workspace-textarea font-mono text-xs leading-relaxed border-border/80 focus:border-primary/50 transition-colors"
+                      placeholder="Paste raw RFC 822 email headers here (Received, DKIM-Signature, From, To, etc)..."
                     />
                   </div>
 
                   <div className="field-shell">
-                    <label className="field-label">Email Body</label>
+                    <div className="flex items-center justify-between">
+                      <label className="field-label text-xs font-semibold tracking-wider text-muted-foreground uppercase">Email Body Content</label>
+                      {emailBody && (
+                        <span className="text-[11px] font-mono text-emerald-400">{emailBody.length} chars</span>
+                      )}
+                    </div>
                     <Textarea
                       value={emailBody}
                       onChange={(e) => setEmailBody(e.target.value)}
-                      className="workspace-textarea"
-                      placeholder="Paste email body here..."
+                      className="workspace-textarea text-xs leading-relaxed border-border/80 focus:border-primary/50 transition-colors"
+                      placeholder="Paste text body or HTML content here..."
                     />
                   </div>
                 </div>
 
-                <div className="flex flex-wrap gap-3">
-                  <Button variant="signal" size="lg" className="min-w-44" onClick={handleAnalyze} disabled={isAnalyzing}>
-                    {isAnalyzing ? <Activity className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
-                    {isAnalyzing ? "Analyzing..." : "Analyze Email"}
+                <div className="flex flex-wrap items-center gap-3 pt-1">
+                  <Button 
+                    variant="signal" 
+                    size="lg" 
+                    className="min-w-[180px] bg-primary hover:bg-primary/90 text-primary-foreground font-semibold shadow-[0_0_20px_rgba(56,189,248,0.25)] transition-all hover:scale-[1.02]" 
+                    onClick={handleAnalyze} 
+                    disabled={isAnalyzing || (!emailHeaders && !emailBody)}
+                  >
+                    {isAnalyzing ? (
+                      <>
+                        <Activity className="h-4 w-4 animate-spin text-primary-foreground" />
+                        Running Analysis...
+                      </>
+                    ) : (
+                      <>
+                        <Sparkles className="h-4 w-4" />
+                        Analyze Email Threat
+                      </>
+                    )}
                   </Button>
 
-                  <div className="relative overflow-hidden">
+                  <div className="relative overflow-hidden inline-block">
                     <input
                       type="file"
                       accept=".eml,.txt"
-                      className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
+                      className="absolute inset-0 h-full w-full cursor-pointer opacity-0 z-10"
                       onChange={(e) => {
                         if (e.target.files && e.target.files.length > 0) {
                           handleFileUpload(e.target.files[0]);
@@ -541,310 +694,321 @@ ${recommendedActions}`;
                         }
                       }}
                     />
-                    <Button variant="panel" size="lg" className="pointer-events-none min-w-44">
-                      <Mail className="h-4 w-4" />
-                      Upload .eml
+                    <Button variant="panel" size="lg" className="min-w-[150px] border-border/80 bg-card hover:bg-accent text-foreground">
+                      <Mail className="h-4 w-4 text-primary" />
+                      Upload EML File
                     </Button>
                   </div>
                 </div>
               </section>
 
-              <section className="investigation-card">
-                <div className="section-topline">
-                  <span className={sectionIconClass}>
-                    <Radar className="h-5 w-5 text-info" />
-                  </span>
-                  <div className="space-y-1">
-                    <p className="section-kicker">Parsed Details</p>
-                    <h2 className={cardTitleClass}>Header breakdown</h2>
+              {/* Parsed Header Details */}
+              <section className="investigation-card border border-border/80 bg-card/80 shadow-lg backdrop-blur-xl">
+                <div className="section-topline flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <span className={sectionIconClass}>
+                      <Radar className="h-5 w-5 text-info" />
+                    </span>
+                    <div>
+                      <p className="section-kicker text-xs uppercase tracking-widest text-muted-foreground font-semibold">Metadata Extraction</p>
+                      <h2 className={cardTitleClass}>Header Breakdown</h2>
+                    </div>
                   </div>
+                  {headerDetails.length > 0 && (
+                    <span className="text-xs font-mono text-info bg-info/10 border border-info/20 px-2.5 py-1 rounded-full">
+                      {headerDetails.length} Fields Extracted
+                    </span>
+                  )}
                 </div>
 
-                <div className="data-table">
+                <div className="data-table border border-border/70 rounded-xl overflow-hidden">
                   {headerDetails.length > 0 ? (
                     headerDetails.map(([label, value]) => (
-                      <div key={`${label}-${value}`} className="data-row">
-                        <div className="data-label">{label}</div>
-                        <div className="data-value">{value}</div>
+                      <div key={`${label}-${value}`} className="data-row hover:bg-accent/40 transition-colors">
+                        <div className="data-label text-xs font-mono font-semibold text-foreground bg-muted/30">{label}</div>
+                        <div className="data-value text-xs font-mono text-muted-foreground break-all">{value}</div>
                       </div>
                     ))
                   ) : (
-                    <div className="empty-state">
-                      <p className="empty-title">Header fields will appear here</p>
-                      <p className="empty-copy">Run analysis to populate parsed sender, routing, and subject details.</p>
+                    <div className="empty-state py-10 text-center">
+                      <p className="empty-title text-sm font-semibold text-foreground">Header metadata will populate here</p>
+                      <p className="empty-copy text-xs text-muted-foreground mt-1">Run analysis to inspect parsed Subject, Return-Path, Sender IP, and Message-ID.</p>
                     </div>
                   )}
                 </div>
               </section>
 
-              <section className="investigation-card report-card">
+              {/* AI Report Card */}
+              <section className="investigation-card report-card border border-border/80 bg-card/80 shadow-xl backdrop-blur-xl">
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                  <div className="section-topline gap-4">
+                  <div className="section-topline flex items-center gap-3">
                     <span className={sectionIconClass}>
                       <FileText className="h-5 w-5 text-primary" />
                     </span>
-                    <div className="space-y-1">
-                      <p className="section-kicker">Formal Report</p>
-                      <h2 className={cardTitleClass}>Security analysis report</h2>
+                    <div>
+                      <p className="section-kicker text-xs uppercase tracking-widest text-muted-foreground font-semibold">Executive Assessment</p>
+                      <h2 className={cardTitleClass}>Security Analysis Report</h2>
                     </div>
                   </div>
 
-                  <div className="flex flex-wrap gap-3">
-                    <Button variant="panel" onClick={handleCopyReport} className="h-11 px-5" disabled={!aiReport}>
-                      <Copy className="h-4 w-4" />
-                      Copy Report
+                  <div className="flex flex-wrap gap-2.5">
+                    <Button variant="panel" onClick={handleCopyReport} size="sm" className="h-9 px-3.5 text-xs border-border/80 bg-card hover:bg-accent" disabled={!aiReport}>
+                      <Copy className="h-3.5 w-3.5" />
+                      Copy Text
                     </Button>
-                    <Button variant="signal" onClick={handleExportReport} className="h-11 px-5" disabled={!aiReport}>
-                      <Download className="h-4 w-4" />
-                      Export Report
+                    <Button variant="signal" onClick={handleExportReport} size="sm" className="h-9 px-3.5 text-xs bg-primary hover:bg-primary/90 text-primary-foreground font-semibold" disabled={!aiReport}>
+                      <Download className="h-3.5 w-3.5" />
+                      Export PDF
                     </Button>
                   </div>
                 </div>
 
-                <div className="report-surface">
+                <div className="report-surface border border-border/70 rounded-xl p-5 bg-background/50">
                   {aiReport ? (
                     <div className="grid gap-5 lg:grid-cols-2">
-                      <div className="report-block">
-                        <span className="report-label text-primary">Verdict</span>
-                        <div className="flex flex-wrap items-center gap-3">
-                          <span className={`formal-verdict ${aiReport.verdict === "High Risk" ? "formal-verdict-danger" : aiReport.verdict === "Suspicious" ? "formal-verdict-warning" : "formal-verdict-safe"}`}>
+                      <div className="report-block p-4 rounded-xl border border-border/60 bg-card/50">
+                        <span className="report-label text-xs font-mono font-bold uppercase tracking-wider text-primary">Verdict</span>
+                        <div className="flex flex-wrap items-center gap-3 mt-1.5">
+                          <span className={`formal-verdict px-3 py-1 text-xs font-bold rounded-full ${aiReport.verdict === "High Risk" ? "formal-verdict-danger bg-danger/15 text-danger border-danger/30" : aiReport.verdict === "Suspicious" ? "formal-verdict-warning bg-warning/15 text-warning border-warning/30" : "formal-verdict-safe bg-success/15 text-success border-success/30"}`}>
                             {aiReport.verdict}
                           </span>
-                          <span className="text-sm font-semibold text-muted-foreground">Risk score: {aiReport.score ?? "N/A"}/100</span>
+                          <span className="text-xs font-mono font-semibold text-muted-foreground">Score: {aiReport.score ?? "N/A"}/100</span>
                         </div>
                       </div>
 
-                      <div className="report-block">
-                        <span className="report-label text-info">Attack Type</span>
-                        <p className="report-value">{aiReport.attackType}</p>
+                      <div className="report-block p-4 rounded-xl border border-border/60 bg-card/50">
+                        <span className="report-label text-xs font-mono font-bold uppercase tracking-wider text-info">Attack Classification</span>
+                        <p className="report-value text-sm font-semibold text-foreground mt-1.5">{aiReport.attackType || "Unclassified"}</p>
                       </div>
 
-                      <div className="report-block lg:col-span-2">
-                        <span className="report-label text-primary">Executive Assessment</span>
-                        <p className="report-value">
-                          {aiReport.analystSummary || "The email was reviewed using authentication checks, extracted indicators, content signals, and reputation data."}
+                      <div className="report-block lg:col-span-2 p-4 rounded-xl border border-border/60 bg-card/50">
+                        <span className="report-label text-xs font-mono font-bold uppercase tracking-wider text-primary">Analyst Executive Summary</span>
+                        <p className="report-value text-xs md:text-sm text-foreground/90 leading-relaxed mt-1.5">
+                          {aiReport.analystSummary || "The email was evaluated across header authentication metrics, domain signatures, content triggers, and reputation databases."}
                         </p>
                       </div>
 
-                      <div className="report-block report-compact-list">
-                        <span className="report-label text-info">What Was Analyzed</span>
-                        <ul className="report-list">
+                      <div className="report-block report-compact-list p-4 rounded-xl border border-border/60 bg-card/50">
+                        <span className="report-label text-xs font-mono font-bold uppercase tracking-wider text-info">Analyzed Components</span>
+                        <ul className="report-list text-xs text-muted-foreground space-y-1 mt-1.5">
                           {headerDetails.length > 0
-                            ? headerDetails.slice(0, 5).map(([label, value]) => <li key={`${label}-${value}`}>{label}: {value}</li>)
-                            : <li>Raw headers, body content, sender metadata, authentication status, links, domains, IPs, and attachment hashes.</li>}
+                            ? headerDetails.slice(0, 4).map(([label, value]) => <li key={`${label}-${value}`} className="truncate"><strong className="text-foreground">{label}:</strong> {value}</li>)
+                            : <li>Headers, subject line, return path, IP routing, links & attachments.</li>}
                         </ul>
                       </div>
 
-                      <div className="report-block report-compact-list">
-                        <span className="report-label text-warning">What Was Observed</span>
-                        <ul className="report-list">
+                      <div className="report-block report-compact-list p-4 rounded-xl border border-border/60 bg-card/50">
+                        <span className="report-label text-xs font-mono font-bold uppercase tracking-wider text-warning">Observed Signals</span>
+                        <ul className="report-list text-xs text-muted-foreground space-y-1 mt-1.5">
                           {indicators.length > 0
-                            ? indicators.slice(0, 4).map((item) => <li key={`${item.label}-${item.query}`}>{item.label}: {item.value} ({item.tags?.join(", ") || "No disposition"})</li>)
-                            : <li>No grouped URLs, domains, IPs, or hashes were detected.</li>}
-                          {attachments.length > 0
-                            ? attachments.slice(0, 2).map((att, index) => <li key={`${att.hash}-${index}`}>Attachment: {att.filename} ({(att.size / 1024).toFixed(1)} KB)</li>)
-                            : <li>No attachments were found.</li>}
+                            ? indicators.slice(0, 3).map((item) => <li key={`${item.label}-${item.query}`} className="truncate"><strong className="text-foreground">{item.label}:</strong> {item.value}</li>)
+                            : <li>No suspicious external domains or IPs flagged in indicators board.</li>}
+                          {attachments.length > 0 && (
+                            <li className="truncate"><strong className="text-foreground">Attachments:</strong> {attachments.length} file(s) scanned</li>
+                          )}
                         </ul>
                       </div>
 
-                      <div className="report-block lg:col-span-2">
-                        <span className="report-label text-warning">Key Findings</span>
-                        <ul className="report-list">
+                      <div className="report-block lg:col-span-2 p-4 rounded-xl border border-border/60 bg-card/50">
+                        <span className="report-label text-xs font-mono font-bold uppercase tracking-wider text-warning">Key Findings</span>
+                        <ul className="report-list text-xs md:text-sm text-foreground/90 space-y-1.5 mt-1.5">
                           {Array.isArray(aiReport.keyFindings)
-                            ? aiReport.keyFindings.map((finding: string, index: number) => <li key={index}>{finding}</li>)
-                            : <li>{aiReport.keyFindings}</li>}
+                            ? aiReport.keyFindings.map((finding: string, index: number) => <li key={index}>• {finding}</li>)
+                            : <li>• {aiReport.keyFindings}</li>}
                         </ul>
                       </div>
 
-                      <div className="report-block report-recommendation lg:col-span-2">
-                        <span className="report-label text-success">Recommendation</span>
-                        <ul className="report-list">
+                      <div className="report-block report-recommendation lg:col-span-2 p-4 rounded-xl border border-emerald-500/30 bg-emerald-500/5">
+                        <span className="report-label text-xs font-mono font-bold uppercase tracking-wider text-emerald-400">Recommended Action Plan</span>
+                        <ul className="report-list text-xs md:text-sm text-emerald-200/90 space-y-1.5 mt-1.5">
                           {Array.isArray(aiReport.recommendedActions)
-                            ? aiReport.recommendedActions.map((action: string, index: number) => <li key={index}>{action}</li>)
-                            : <li>{aiReport.recommendedActions}</li>}
-                          <li>Double check the sender identity, domains, links, attachments, and business context before taking action.</li>
+                            ? aiReport.recommendedActions.map((action: string, index: number) => <li key={index}>✓ {action}</li>)
+                            : <li>✓ {aiReport.recommendedActions}</li>}
+                          <li>✓ Always verify identity via secondary channels before taking action on urgent requests.</li>
                         </ul>
                       </div>
                     </div>
                   ) : (
-                    <div className="empty-state min-h-[280px]">
-                      <p className="empty-title">Your formal report appears here</p>
-                      <p className="empty-copy max-w-xl">
-                        Run the analyzer to generate a structured report covering what was analyzed, what was observed,
-                        key findings, and recommendations.
+                    <div className="empty-state min-h-[220px] text-center flex flex-col items-center justify-center">
+                      <FileText className="h-10 w-10 text-muted-foreground/40 mb-2" />
+                      <p className="empty-title text-sm font-semibold text-foreground">No Report Generated Yet</p>
+                      <p className="empty-copy text-xs text-muted-foreground max-w-sm mt-1">
+                        Submit email content or click "Sample Email" above to trigger an AI threat analysis.
                       </p>
                     </div>
                   )}
                 </div>
               </section>
+
             </div>
 
+            {/* Right Column: Score Card & Auth Checks & IOC Extraction & Attachments */}
             <div className="space-y-6">
-              <div className="grid gap-6 2xl:grid-cols-[1.05fr_0.95fr]">
-                <section className="investigation-card score-card">
-                  <div className="section-topline">
-                    <span className={sectionIconClass}>
-                      <Gauge className="h-5 w-5 text-primary" />
-                    </span>
-                    <div className="space-y-1">
-                      <p className="section-kicker">Risk Summary</p>
-                      <h2 className={cardTitleClass}>Phishing score card</h2>
-                    </div>
-                  </div>
 
-                  <div className="score-shell">
-                    <div className="score-ring">
-                      <div className="score-core">
-                        <span className="score-range">{aiReport?.score ?? "0"}</span>
-                        <span className="score-caption">Risk index</span>
-                      </div>
-                    </div>
-
-                    <div className="space-y-3 text-center">
-                      <p className="text-xl font-semibold tracking-[-0.03em] text-foreground">{aiReport?.verdict || "Verdict Pending"}</p>
-                      <p className="text-sm leading-6 text-muted-foreground">
-                        {aiReport?.analystSummary || "Legitimate, suspicious, or phishing classification appears here after the API returns."}
-                      </p>
-                    </div>
-
-                    <div className="flex flex-wrap justify-center gap-2">
-                      {scoreTags.map(([text, tone]: any) => (
-                        <span key={text} className={`rounded-full border px-3 py-1.5 text-xs font-semibold tracking-[0.16em] uppercase ${tagClass[tone] || tagClass.Suspicious}`}>
-                          {text}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </section>
-
-                <section className="investigation-card">
-                  <div className="section-topline">
-                    <span className={sectionIconClass}>
-                      <Shield className="h-5 w-5 text-info" />
-                    </span>
-                    <div className="space-y-1">
-                      <p className="section-kicker">Auth Checks</p>
-                      <h2 className={cardTitleClass}>Verification signals</h2>
-                    </div>
-                  </div>
-
-                  <div className="space-y-3">
-                    {authChecks.length > 0 ? (
-                      authChecks.map(({ label, value, tone }) => {
-                        const Icon = toneIconMap[tone] || AlertTriangle;
-                        return (
-                          <div key={label} className="auth-row">
-                            <span className="text-[15px] font-medium text-foreground">{label}</span>
-                            <span className={`inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] ${statusClass[tone] || statusClass.muted}`}>
-                              <Icon className="h-3.5 w-3.5" />
-                              {value}
-                            </span>
-                          </div>
-                        );
-                      })
-                    ) : (
-                      <div className="empty-state min-h-[220px]">
-                        <p className="empty-title">No authentication checks yet</p>
-                        <p className="empty-copy">SPF, DKIM, DMARC, and reply-to validation will populate after analysis.</p>
-                      </div>
-                    )}
-                  </div>
-                </section>
-              </div>
-
-              <section className="investigation-card">
-                <div className="section-topline">
+              {/* Phishing Score Card */}
+              <section className="investigation-card score-card border border-border/80 bg-card/80 shadow-xl backdrop-blur-xl">
+                <div className="section-topline flex items-center gap-3">
                   <span className={sectionIconClass}>
-                    <Link2 className="h-5 w-5 text-warning" />
+                    <Gauge className="h-5 w-5 text-primary" />
                   </span>
-                  <div className="space-y-1">
-                    <p className="section-kicker">IOC Extraction</p>
-                    <h2 className={cardTitleClass}>Indicator review board</h2>
+                  <div>
+                    <p className="section-kicker text-xs uppercase tracking-widest text-muted-foreground font-semibold">Risk Index</p>
+                    <h2 className={cardTitleClass}>Phishing Score Card</h2>
                   </div>
                 </div>
 
-                <div className="indicator-table">
-                  <div className="indicator-head">
-                    <span>Signal</span>
-                    <span>Observed Value</span>
-                    <span className="text-right">Disposition</span>
+                <div className="score-shell flex flex-col items-center p-6 border border-border/70 rounded-2xl bg-background/40">
+                  <div className="score-ring relative mb-4">
+                    <div className="score-core flex flex-col items-center justify-center">
+                      <span className="score-range text-4xl font-bold font-display text-primary">{aiReport?.score ?? "0"}</span>
+                      <span className="score-caption text-[10px] uppercase font-mono tracking-widest text-muted-foreground mt-1">Threat Score</span>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2 text-center max-w-xs">
+                    <p className="text-lg font-bold tracking-tight text-foreground">{aiReport?.verdict || "Awaiting Analysis"}</p>
+                    <p className="text-xs leading-relaxed text-muted-foreground">
+                      {aiReport?.analystSummary ? aiReport.analystSummary.slice(0, 110) + "..." : "Risk Index measures SPF/DKIM integrity, domain reputation, and urgent phish language."}
+                    </p>
+                  </div>
+
+                  <div className="flex flex-wrap justify-center gap-2 mt-4 pt-4 border-t border-border/60 w-full">
+                    {scoreTags.map(([text, tone]: any) => (
+                      <span key={text} className={`rounded-full border px-2.5 py-1 text-[10px] font-mono font-semibold tracking-wider uppercase ${tagClass[tone] || tagClass.Suspicious}`}>
+                        {text}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </section>
+
+              {/* Verification Signals (SPF/DKIM/DMARC) */}
+              <section className="investigation-card border border-border/80 bg-card/80 shadow-xl backdrop-blur-xl">
+                <div className="section-topline flex items-center gap-3">
+                  <span className={sectionIconClass}>
+                    <Shield className="h-5 w-5 text-info" />
+                  </span>
+                  <div>
+                    <p className="section-kicker text-xs uppercase tracking-widest text-muted-foreground font-semibold">Authentication</p>
+                    <h2 className={cardTitleClass}>Verification Signals</h2>
+                  </div>
+                </div>
+
+                <div className="space-y-2.5">
+                  {authChecks.length > 0 ? (
+                    authChecks.map(({ label, value, tone }) => {
+                      const Icon = toneIconMap[tone] || AlertTriangle;
+                      return (
+                        <div key={label} className="auth-row flex items-center justify-between p-3 rounded-xl border border-border/70 bg-background/50 hover:bg-accent/40 transition-colors">
+                          <span className="text-xs font-semibold text-foreground font-mono">{label}</span>
+                          <span className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[10px] font-mono font-bold uppercase tracking-wider ${statusClass[tone] || statusClass.muted}`}>
+                            <Icon className="h-3 w-3" />
+                            {value}
+                          </span>
+                        </div>
+                      );
+                    })
+                  ) : (
+                    <div className="empty-state py-8 text-center">
+                      <p className="empty-title text-sm font-semibold text-foreground">Authentication status unverified</p>
+                      <p className="empty-copy text-xs text-muted-foreground mt-1">SPF, DKIM, DMARC, and Return-Path checks will display here.</p>
+                    </div>
+                  )}
+                </div>
+              </section>
+
+              {/* Indicator Review Board (IOCs) */}
+              <section className="investigation-card border border-border/80 bg-card/80 shadow-xl backdrop-blur-xl">
+                <div className="section-topline flex items-center gap-3">
+                  <span className={sectionIconClass}>
+                    <Link2 className="h-5 w-5 text-warning" />
+                  </span>
+                  <div>
+                    <p className="section-kicker text-xs uppercase tracking-widest text-muted-foreground font-semibold">IOC Board</p>
+                    <h2 className={cardTitleClass}>Extracted Indicators</h2>
+                  </div>
+                </div>
+
+                <div className="indicator-table border border-border/70 rounded-xl overflow-hidden">
+                  <div className="indicator-head bg-muted/30 p-2.5 text-[11px] font-mono font-bold uppercase text-muted-foreground grid grid-cols-12 gap-2">
+                    <span className="col-span-3">Signal</span>
+                    <span className="col-span-6">Value / Lookup</span>
+                    <span className="col-span-3 text-right">Tag</span>
                   </div>
 
                   {indicators.length > 0 ? (
                     indicators.map((item) => (
-                      <div key={`${item.label}-${item.query}-${item.value}`} className="indicator-row">
-                        <span className="indicator-label">{item.label}</span>
-
-                        <div className="flex flex-col gap-3 xl:flex-row xl:items-center">
-                          <div className="indicator-value-shell">
-                            <span className="truncate font-mono text-sm text-foreground">{item.value}</span>
-                            <Copy className="h-3.5 w-3.5 cursor-pointer text-muted-foreground transition-colors hover:text-foreground" />
+                      <div key={`${item.label}-${item.query}-${item.value}`} className="indicator-row p-3 border-t border-border/60 flex flex-col gap-2">
+                        <div className="flex items-center justify-between">
+                          <span className="indicator-label text-xs font-mono font-bold text-foreground">{item.label}</span>
+                          <div className="flex items-center gap-1">
+                            {item.tags?.map((tag: string) => (
+                              <span key={tag} className={`rounded-full border px-2 py-0.5 text-[9px] font-mono font-semibold uppercase ${tagClass[tag] || tagClass.Suspicious}`}>
+                                {tag}
+                              </span>
+                            ))}
                           </div>
-
-                          <Button variant="panel" size="sm" className="h-10 self-start xl:self-auto" asChild>
-                            <a href={`https://www.virustotal.com/gui/search/${encodeURIComponent(item.query)}`} target="_blank" rel="noopener noreferrer">
-                              <ScanSearch className="h-3.5 w-3.5" />
-                              VirusTotal
-                            </a>
-                          </Button>
                         </div>
 
-                        <div className="flex flex-wrap justify-end gap-2">
-                          {item.tags.map((tag: string) => (
-                            <span key={tag} className={`rounded-full border px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] ${tagClass[tag] || tagClass.Suspicious}`}>
-                              {tag}
-                            </span>
-                          ))}
+                        <div className="flex items-center justify-between gap-2 bg-background/60 p-2 rounded-lg border border-border/60">
+                          <span className="truncate font-mono text-[11px] text-foreground/90 max-w-[200px] sm:max-w-[240px]">{item.value}</span>
+                          <Button variant="panel" size="sm" className="h-7 text-[10px] px-2 gap-1 border-border/80 hover:bg-accent shrink-0" asChild>
+                            <a href={`https://www.virustotal.com/gui/search/${encodeURIComponent(item.query)}`} target="_blank" rel="noopener noreferrer">
+                              <ExternalLink className="h-3 w-3 text-primary" />
+                              VT Check
+                            </a>
+                          </Button>
                         </div>
                       </div>
                     ))
                   ) : (
-                    <div className="empty-state">
-                      <p className="empty-title">Indicators will be grouped here</p>
-                      <p className="empty-copy">URLs, domains, IPs, hashes, and sender addresses appear once extracted.</p>
+                    <div className="empty-state py-8 text-center">
+                      <p className="empty-title text-sm font-semibold text-foreground">No indicators extracted yet</p>
+                      <p className="empty-copy text-xs text-muted-foreground mt-1">Extracted URLs, domains, and IP addresses will be listed here.</p>
                     </div>
                   )}
                 </div>
               </section>
 
-              <section className="investigation-card">
-                <div className="section-topline">
+              {/* Extracted Attachments */}
+              <section className="investigation-card border border-border/80 bg-card/80 shadow-xl backdrop-blur-xl">
+                <div className="section-topline flex items-center gap-3">
                   <span className={sectionIconClass}>
                     <Paperclip className="h-5 w-5 text-info" />
                   </span>
-                  <div className="space-y-1">
-                    <p className="section-kicker">Extracted Files</p>
+                  <div>
+                    <p className="section-kicker text-xs uppercase tracking-widest text-muted-foreground font-semibold">File Inspection</p>
                     <h2 className={cardTitleClass}>Attachments</h2>
                   </div>
                 </div>
 
-                <div className="data-table">
+                <div className="data-table border border-border/70 rounded-xl overflow-hidden">
                   {attachments.length > 0 ? (
                     attachments.map((att, idx) => (
-                      <div key={idx} className="flex flex-col items-start gap-3 border-b border-border/85 p-4 last:border-0">
-                        <div className="flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                          <div className="flex items-center gap-2">
-                            <Paperclip className="h-4 w-4 shrink-0 text-muted-foreground" />
-                            <span className="font-semibold text-foreground break-all">{att.filename}</span>
-                            <span className="shrink-0 text-sm text-muted-foreground">({(att.size / 1024).toFixed(1)} KB)</span>
+                      <div key={idx} className="flex flex-col gap-2 p-3 border-b border-border/70 last:border-0 hover:bg-accent/40 transition-colors">
+                        <div className="flex items-center justify-between gap-2">
+                          <div className="flex items-center gap-2 min-w-0">
+                            <Paperclip className="h-4 w-4 shrink-0 text-primary" />
+                            <span className="font-semibold text-xs text-foreground truncate">{att.filename}</span>
+                            <span className="shrink-0 text-[11px] font-mono text-muted-foreground">({(att.size / 1024).toFixed(1)} KB)</span>
                           </div>
 
-                          <Button variant="panel" size="sm" className="h-8 shrink-0" asChild>
+                          <Button variant="panel" size="sm" className="h-7 text-[10px] px-2.5 gap-1 shrink-0" asChild>
                             <a href={`https://www.virustotal.com/gui/file/${att.hash}`} target="_blank" rel="noopener noreferrer">
-                              <ScanSearch className="h-3.5 w-3.5" />
-                              Check VirusTotal
+                              <ExternalLink className="h-3 w-3 text-primary" />
+                              VT Hash
                             </a>
                           </Button>
                         </div>
-                        <div className="hash-shell">
-                          Hash: {att.hash}
+                        <div className="hash-shell text-[10px] font-mono bg-muted/40 p-2 rounded border border-border/60 text-muted-foreground break-all">
+                          SHA256: {att.hash}
                         </div>
                       </div>
                     ))
                   ) : (
-                    <div className="empty-state min-h-[140px]">
-                      <p className="empty-title">No attachments found</p>
-                      <p className="empty-copy">Any extracted files will be hashed and checked against VirusTotal.</p>
+                    <div className="empty-state py-8 text-center">
+                      <p className="empty-title text-sm font-semibold text-foreground">No attachments detected</p>
+                      <p className="empty-copy text-xs text-muted-foreground mt-1">Extracted file attachments and SHA256 hashes will appear here.</p>
                     </div>
                   )}
                 </div>
@@ -853,14 +1017,50 @@ ${recommendedActions}`;
             </div>
           </div>
         </section>
-
-        <footer className="w-full pb-8 pt-4 text-center">
-          <p className={`${isLightMode ? "text-black" : "text-white"} font-bold`}>
-            AI can make mistakes, Please double check reponses
-          </p>
-        </footer>
       </div>
-    </main>
+
+      {/* Premium Dark Mode Footer */}
+      <footer className="w-full border-t border-border/80 bg-card/60 backdrop-blur-xl mt-12 py-8 transition-colors">
+        <div className="mx-auto max-w-[1500px] px-4 md:px-8 xl:px-12">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6 pb-6 border-b border-border/60">
+            {/* Left Brand info */}
+            <div className="flex items-center gap-3 text-left">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-primary/40 bg-primary/10 text-primary">
+                <ShieldCheck className="h-5 w-5" />
+              </div>
+              <div>
+                <h3 className="font-display font-bold text-sm tracking-tight text-foreground">
+                  MAIL <span className="text-primary">DEFENDER</span>
+                </h3>
+                <p className="text-xs text-muted-foreground">
+                  Advanced AI Email Security & Forensic Threat Platform
+                </p>
+              </div>
+            </div>
+
+            {/* Core Capability Badges */}
+            <div className="flex flex-wrap items-center gap-2 text-[11px] font-mono text-muted-foreground">
+              <span className="px-2.5 py-1 rounded-md border border-border/60 bg-background/50">Header Parser</span>
+              <span className="px-2.5 py-1 rounded-md border border-border/60 bg-background/50">SPF / DKIM Checks</span>
+              <span className="px-2.5 py-1 rounded-md border border-border/60 bg-background/50">VT Integration</span>
+              <span className="px-2.5 py-1 rounded-md border border-border/60 bg-background/50">PDF Export</span>
+            </div>
+          </div>
+
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 text-xs text-muted-foreground">
+            <p className="font-medium text-center sm:text-left">
+              © {new Date().getFullYear()} Mail Defender. Built for SOC Analysts & Security Researchers.
+            </p>
+            <div className="flex items-center gap-2 text-[11px]">
+              <span className="inline-block h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              <p className="font-semibold text-foreground">
+                AI outputs should be validated against internal security policies.
+              </p>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
   );
 };
 

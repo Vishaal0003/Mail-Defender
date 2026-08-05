@@ -1,0 +1,216 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1700" height="1100" viewBox="0 0 1700 1100">
+  <defs>
+    <style>
+      .bg { fill: #f7faff; }
+      .title { font: 700 34px Arial, Helvetica, sans-serif; fill: #0b2545; }
+      .subtitle { font: 400 17px Arial, Helvetica, sans-serif; fill: #5b677a; }
+      .process { fill: #eaf2fb; stroke: #1f5a91; stroke-width: 2.2; }
+      .process-title { font: 700 17px Arial, Helvetica, sans-serif; fill: #0b2545; text-anchor: middle; }
+      .process-note { font: 400 12px Arial, Helvetica, sans-serif; fill: #5b677a; text-anchor: middle; }
+      .entity { fill: #ffffff; stroke: #0b2545; stroke-width: 2.2; rx: 12; }
+      .entity-title { font: 700 16px Arial, Helvetica, sans-serif; fill: #0b2545; text-anchor: middle; }
+      .entity-note { font: 400 12px Arial, Helvetica, sans-serif; fill: #5b677a; text-anchor: middle; }
+      .store { fill: #fff7e6; stroke: #b7791f; stroke-width: 2; rx: 8; }
+      .store-title { font: 700 15px Arial, Helvetica, sans-serif; fill: #0b2545; text-anchor: middle; }
+      .store-note { font: 400 12px Arial, Helvetica, sans-serif; fill: #7a5a00; text-anchor: middle; }
+      .flow { stroke: #53657a; stroke-width: 2; fill: none; marker-end: url(#arrow); }
+      .flow-blue { stroke: #1f5a91; stroke-width: 2; fill: none; marker-end: url(#arrowBlue); }
+      .flow-gold { stroke: #b7791f; stroke-width: 2; stroke-dasharray: 8 5; fill: none; marker-end: url(#arrowGold); }
+      .label-box { fill: #f7faff; stroke: #c9d4e2; stroke-width: 0.8; rx: 5; }
+      .label { font: 700 12px Arial, Helvetica, sans-serif; fill: #334155; text-anchor: middle; }
+      .section { font: 700 18px Arial, Helvetica, sans-serif; fill: #1f5a91; }
+      .note { fill: #ffffff; stroke: #c9d4e2; stroke-width: 1.4; rx: 12; }
+      .note-title { font: 700 13px Arial, Helvetica, sans-serif; fill: #0b2545; }
+      .note-text { font: 400 13px Arial, Helvetica, sans-serif; fill: #334155; }
+    </style>
+    <marker id="arrow" markerWidth="12" markerHeight="10" refX="11" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M 0 0 L 12 5 L 0 10 z" fill="#53657a"/>
+    </marker>
+    <marker id="arrowBlue" markerWidth="12" markerHeight="10" refX="11" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M 0 0 L 12 5 L 0 10 z" fill="#1f5a91"/>
+    </marker>
+    <marker id="arrowGold" markerWidth="12" markerHeight="10" refX="11" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M 0 0 L 12 5 L 0 10 z" fill="#b7791f"/>
+    </marker>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1700" height="1100"/>
+  <text class="title" x="850" y="54" text-anchor="middle">Mail Defender - Data Flow Diagram</text>
+  <text class="subtitle" x="850" y="83" text-anchor="middle">Level 1 DFD showing how suspicious email data moves through parsing, IOC extraction, enrichment, scoring, AI analysis, and reporting</text>
+
+  <!-- External entities -->
+  <text class="section" x="70" y="145">External Entities</text>
+  <g transform="translate(60 185)">
+    <rect class="entity" x="0" y="0" width="230" height="90"/>
+    <text class="entity-title" x="115" y="36">User / Analyst</text>
+    <text class="entity-note" x="115" y="58">uploads or pastes</text>
+    <text class="entity-note" x="115" y="74">suspicious email</text>
+  </g>
+
+  <g transform="translate(1410 215)">
+    <rect class="entity" x="0" y="0" width="230" height="90"/>
+    <text class="entity-title" x="115" y="36">Threat Intel APIs</text>
+    <text class="entity-note" x="115" y="58">VirusTotal</text>
+    <text class="entity-note" x="115" y="74">AbuseIPDB</text>
+  </g>
+
+  <g transform="translate(1410 520)">
+    <rect class="entity" x="0" y="0" width="230" height="90"/>
+    <text class="entity-title" x="115" y="36">AI Analysis API</text>
+    <text class="entity-note" x="115" y="58">generates summary</text>
+    <text class="entity-note" x="115" y="74">and recommendations</text>
+  </g>
+
+  <g transform="translate(1410 820)">
+    <rect class="entity" x="0" y="0" width="230" height="90"/>
+    <text class="entity-title" x="115" y="36">Report Consumer</text>
+    <text class="entity-note" x="115" y="58">student, IT admin,</text>
+    <text class="entity-note" x="115" y="74">or SOC analyst</text>
+  </g>
+
+  <!-- Processes -->
+  <text class="section" x="420" y="145">Mail Defender Processes</text>
+  <g transform="translate(390 175)">
+    <ellipse class="process" cx="120" cy="58" rx="120" ry="58"/>
+    <text class="process-title" x="120" y="45">1.0 Email Intake</text>
+    <text class="process-note" x="120" y="66">accept .eml, .txt,</text>
+    <text class="process-note" x="120" y="82">headers and body</text>
+  </g>
+
+  <g transform="translate(390 370)">
+    <ellipse class="process" cx="120" cy="58" rx="120" ry="58"/>
+    <text class="process-title" x="120" y="45">2.0 Parse Email</text>
+    <text class="process-note" x="120" y="66">split headers/body</text>
+    <text class="process-note" x="120" y="82">read attachments</text>
+  </g>
+
+  <g transform="translate(705 370)">
+    <ellipse class="process" cx="135" cy="58" rx="135" ry="58"/>
+    <text class="process-title" x="135" y="45">3.0 Extract Evidence</text>
+    <text class="process-note" x="135" y="66">URLs, domains, IPs,</text>
+    <text class="process-note" x="135" y="82">hashes, auth results</text>
+  </g>
+
+  <g transform="translate(1025 280)">
+    <ellipse class="process" cx="135" cy="58" rx="135" ry="58"/>
+    <text class="process-title" x="135" y="45">4.0 Enrich IOCs</text>
+    <text class="process-note" x="135" y="66">check reputation</text>
+    <text class="process-note" x="135" y="82">and abuse signals</text>
+  </g>
+
+  <g transform="translate(1025 520)">
+    <ellipse class="process" cx="135" cy="58" rx="135" ry="58"/>
+    <text class="process-title" x="135" y="45">5.0 Score Risk</text>
+    <text class="process-note" x="135" y="66">local rules +</text>
+    <text class="process-note" x="135" y="82">reputation evidence</text>
+  </g>
+
+  <g transform="translate(705 700)">
+    <ellipse class="process" cx="135" cy="58" rx="135" ry="58"/>
+    <text class="process-title" x="135" y="45">6.0 Build Report</text>
+    <text class="process-note" x="135" y="66">findings, actions,</text>
+    <text class="process-note" x="135" y="82">copy or PDF export</text>
+  </g>
+
+  <g transform="translate(1025 700)">
+    <ellipse class="process" cx="135" cy="58" rx="135" ry="58"/>
+    <text class="process-title" x="135" y="45">7.0 AI Summary</text>
+    <text class="process-note" x="135" y="66">analyst summary</text>
+    <text class="process-note" x="135" y="82">from evidence</text>
+  </g>
+
+  <!-- Data stores -->
+  <text class="section" x="70" y="705">Data Stores</text>
+  <g transform="translate(60 735)">
+    <rect class="store" x="0" y="0" width="250" height="78"/>
+    <text class="store-title" x="125" y="32">D1 Email Input</text>
+    <text class="store-note" x="125" y="54">raw headers, body, files</text>
+  </g>
+
+  <g transform="translate(60 850)">
+    <rect class="store" x="0" y="0" width="250" height="78"/>
+    <text class="store-title" x="125" y="32">D2 Analysis Result</text>
+    <text class="store-note" x="125" y="54">verdict, score, evidence</text>
+  </g>
+
+  <g transform="translate(390 850)">
+    <rect class="store" x="0" y="0" width="250" height="78"/>
+    <text class="store-title" x="125" y="32">D3 Report Archive</text>
+    <text class="store-note" x="125" y="54">future saved PDFs/cases</text>
+  </g>
+
+  <!-- Flows from user and data stores -->
+  <path class="flow-blue" d="M290 230 C330 230 350 230 390 230"/>
+  <rect class="label-box" x="286" y="198" width="116" height="24"/>
+  <text class="label" x="344" y="215">email data</text>
+
+  <path class="flow-gold" d="M510 291 C430 635 300 725 185 735"/>
+  <rect class="label-box" x="284" y="626" width="142" height="24"/>
+  <text class="label" x="355" y="643">store raw input</text>
+
+  <path class="flow-blue" d="M510 291 L510 370"/>
+  <rect class="label-box" x="522" y="318" width="122" height="24"/>
+  <text class="label" x="583" y="335">validated input</text>
+
+  <path class="flow-blue" d="M630 428 L705 428"/>
+  <rect class="label-box" x="625" y="392" width="108" height="24"/>
+  <text class="label" x="679" y="409">parsed email</text>
+
+  <path class="flow-blue" d="M975 410 C1010 390 1020 365 1025 342"/>
+  <rect class="label-box" x="944" y="356" width="104" height="24"/>
+  <text class="label" x="996" y="373">IOCs</text>
+
+  <path class="flow" d="M1295 336 L1410 260"/>
+  <rect class="label-box" x="1293" y="279" width="112" height="24"/>
+  <text class="label" x="1349" y="296">lookup request</text>
+
+  <path class="flow" d="M1410 285 C1350 340 1310 365 1290 383"/>
+  <rect class="label-box" x="1306" y="330" width="126" height="24"/>
+  <text class="label" x="1369" y="347">reputation data</text>
+
+  <path class="flow-blue" d="M840 428 C890 510 960 560 1025 578"/>
+  <rect class="label-box" x="875" y="522" width="116" height="24"/>
+  <text class="label" x="933" y="539">local signals</text>
+
+  <path class="flow-blue" d="M1160 396 L1160 520"/>
+  <rect class="label-box" x="1174" y="442" width="126" height="24"/>
+  <text class="label" x="1237" y="459">enrichment result</text>
+
+  <path class="flow-blue" d="M1160 636 L1160 700"/>
+  <rect class="label-box" x="1172" y="655" width="98" height="24"/>
+  <text class="label" x="1221" y="672">evidence</text>
+
+  <path class="flow" d="M1295 758 C1340 700 1380 635 1410 580"/>
+  <rect class="label-box" x="1292" y="663" width="110" height="24"/>
+  <text class="label" x="1347" y="680">AI prompt</text>
+
+  <path class="flow" d="M1410 565 C1348 618 1315 675 1290 724"/>
+  <rect class="label-box" x="1306" y="610" width="116" height="24"/>
+  <text class="label" x="1364" y="627">AI response</text>
+
+  <path class="flow-blue" d="M1025 758 L975 758"/>
+  <rect class="label-box" x="956" y="724" width="118" height="24"/>
+  <text class="label" x="1015" y="741">summary</text>
+
+  <path class="flow-blue" d="M1028 608 C980 675 930 715 970 746"/>
+  <rect class="label-box" x="925" y="660" width="126" height="24"/>
+  <text class="label" x="988" y="677">risk verdict</text>
+
+  <path class="flow-gold" d="M760 795 C610 860 430 890 310 890"/>
+  <rect class="label-box" x="448" y="858" width="132" height="24"/>
+  <text class="label" x="514" y="875">save result</text>
+
+  <path class="flow-gold" d="M795 812 C745 865 690 895 640 890"/>
+  <rect class="label-box" x="672" y="850" width="116" height="24"/>
+  <text class="label" x="730" y="867">save report</text>
+
+  <path class="flow-blue" d="M975 758 C1120 805 1280 848 1410 865"/>
+  <rect class="label-box" x="1140" y="804" width="134" height="24"/>
+  <text class="label" x="1207" y="821">final report</text>
+
+  <!-- Notes -->
+  <rect class="note" x="430" y="975" width="840" height="70"/>
+  <text class="note-title" x="455" y="1000">Legend:</text>
+  <text class="note-text" x="515" y="1000">Blue arrows are internal data flows. Gray arrows are external API requests/responses.</text>
+  <text class="note-text" x="455" y="1023">Gold dashed arrows represent future persistence such as saved analysis history, report archive, and case management.</text>
+</svg>

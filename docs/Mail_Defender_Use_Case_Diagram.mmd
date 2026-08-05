@@ -1,0 +1,47 @@
+usecaseDiagram
+actor "Employee Reporter" as Employee
+actor "Security Analyst" as Analyst
+actor "IT Helpdesk Admin" as Helpdesk
+actor "Threat Intel Services" as ThreatIntel
+actor "AI Analysis Service" as AIService
+actor "System Admin" as Admin
+
+rectangle "Mail Defender System" {
+  usecase "Submit Suspicious Email" as UC_Submit
+  usecase "Upload .eml/.txt or Paste Headers/Body" as UC_Upload
+  usecase "Analyze Email" as UC_Analyze
+  usecase "Parse Headers and Body" as UC_Parse
+  usecase "Check SPF, DKIM, DMARC" as UC_Auth
+  usecase "Extract IOCs" as UC_IOC
+  usecase "Hash and Review Attachments" as UC_Attach
+  usecase "Enrich Indicators" as UC_Enrich
+  usecase "Calculate Risk Score" as UC_Score
+  usecase "Generate AI Summary" as UC_AI
+  usecase "Review Evidence Dashboard" as UC_Review
+  usecase "Export or Copy Report" as UC_Export
+  usecase "Manage Cases (Future)" as UC_Cases
+  usecase "Manage Users, Rules and Integrations (Future)" as UC_Settings
+}
+
+Employee --> UC_Submit
+Analyst --> UC_Analyze
+Analyst --> UC_Review
+Analyst --> UC_Export
+Helpdesk --> UC_Submit
+Helpdesk --> UC_Analyze
+Helpdesk --> UC_Export
+ThreatIntel --> UC_Enrich
+AIService --> UC_AI
+Admin --> UC_Cases
+Admin --> UC_Settings
+
+UC_Submit ..> UC_Upload : <<include>>
+UC_Analyze ..> UC_Parse : <<include>>
+UC_Analyze ..> UC_Auth : <<include>>
+UC_Analyze ..> UC_IOC : <<include>>
+UC_Analyze ..> UC_Attach : <<include>>
+UC_IOC ..> UC_Enrich : <<include>>
+UC_Enrich ..> UC_Score : <<include>>
+UC_Score ..> UC_AI : <<include>>
+UC_Score ..> UC_Review : <<include>>
+UC_Review ..> UC_Export : <<include>>

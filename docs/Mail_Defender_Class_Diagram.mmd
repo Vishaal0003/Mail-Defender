@@ -1,0 +1,169 @@
+classDiagram
+direction LR
+
+class Organization {
+  +UUID organizationId
+  +String name
+  +addUser(user)
+  +configureIntegration()
+}
+
+class User {
+  +UUID userId
+  +String name
+  +submitEmail()
+  +exportReport()
+}
+
+class Role {
+  +UUID roleId
+  +String name
+  +Boolean canAnalyze
+  +Boolean canAdmin
+}
+
+class EmailSubmission {
+  +UUID submissionId
+  +String emailHeaders
+  +String emailBody
+  +splitRawEmail()
+  +validateInput()
+  +getRawMessage()
+}
+
+class HeaderDetails {
+  +String from
+  +String replyTo
+  +String originatingIp
+  +getSenderDomain()
+  +hasReplyMismatch()
+}
+
+class AuthCheck {
+  +AuthStatus spf
+  +AuthStatus dkim
+  +AuthStatus dmarc
+  +getTone()
+  +isFailure()
+}
+
+class Indicator {
+  +UUID indicatorId
+  +IOCType type
+  +String value
+  +normalize()
+  +getDisposition()
+}
+
+class Attachment {
+  +String filename
+  +String contentType
+  +String sha256
+  +calculateHash()
+  +toIndicator()
+}
+
+class AnalysisResult {
+  +UUID resultId
+  +Verdict verdict
+  +Number score
+  +mergeAiFindings()
+  +buildSummary()
+  +getRecommendations()
+}
+
+class Report {
+  +UUID reportId
+  +DateTime generatedAt
+  +String format
+  +copyToClipboard()
+  +exportPdf()
+}
+
+class EmailParser {
+  <<service>>
+  +Number maxSize
+  +parse(rawEmail)
+  +extractAttachments()
+}
+
+class IOCExtractor {
+  <<service>>
+  +Pattern[] regexRules
+  +extract(text)
+  +filterPrivateIps()
+}
+
+class ThreatIntelService {
+  <<abstract service>>
+  +Secret apiKey
+  +lookup(indicator)
+  +mapDisposition()
+}
+
+class VirusTotalService {
+  <<service>>
+  +URL endpoint
+  +lookupUrl()
+  +lookupHash()
+}
+
+class AbuseIPDBService {
+  <<service>>
+  +Number maxAgeInDays
+  +checkIp(ip)
+  +getAbuseScore()
+}
+
+class RiskScoringEngine {
+  <<service>>
+  +Rule[] rules
+  +calculateScore()
+  +classifyAttackType()
+}
+
+class AIAnalysisService {
+  <<service>>
+  +String model
+  +buildPrompt()
+  +summarizeEvidence()
+}
+
+class ReportGenerator {
+  <<service>>
+  +ReportTemplate template
+  +buildStructuredReport()
+  +exportPdf()
+}
+
+class InvestigationCase {
+  <<future>>
+  +UUID caseId
+  +Severity severity
+  +CaseStatus status
+  +assignOwner(user)
+  +addComment(text)
+  +closeCase()
+}
+
+Organization "1" --> "*" User : has
+Role "1" --> "*" User : assigned
+User "1" --> "*" EmailSubmission : submits
+EmailSubmission "1" --> "1" AnalysisResult : produces
+EmailSubmission "1" --> "1" HeaderDetails : contains
+EmailSubmission "1" --> "*" AuthCheck : has
+EmailSubmission "1" --> "*" Indicator : extracts
+EmailSubmission "1" --> "*" Attachment : has
+AnalysisResult "1" --> "1" Report : creates
+EmailSubmission "1" --> "0..1" InvestigationCase : may become
+
+EmailParser ..> EmailSubmission : parses
+IOCExtractor ..> Indicator : extracts
+ThreatIntelService ..> Indicator : enriches
+VirusTotalService --|> ThreatIntelService
+AbuseIPDBService --|> ThreatIntelService
+RiskScoringEngine ..> AuthCheck : uses
+RiskScoringEngine ..> Indicator : uses
+AIAnalysisService ..> AnalysisResult : summarizes
+ReportGenerator ..> AnalysisResult : reads
+ReportGenerator ..> Report : generates
