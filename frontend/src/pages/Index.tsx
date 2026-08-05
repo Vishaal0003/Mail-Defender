@@ -459,57 +459,44 @@ ${recommendedActions}`;
 
         {/* Sticky Premium Navbar Header */}
         <header className="sticky top-0 z-50 w-full border-b border-border/80 bg-background/80 backdrop-blur-xl transition-all duration-300">
-          <div className="mx-auto flex max-w-[1500px] items-center justify-between px-4 py-3.5 md:px-8 xl:px-12">
+          <div className="mx-auto flex max-w-[1500px] items-center justify-between px-3 py-3 sm:px-4 md:px-8 xl:px-12">
             {/* Brand Logo & Title */}
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-primary/40 bg-primary/10 text-primary shadow-[0_0_20px_rgba(56,189,248,0.2)]">
-                <ShieldCheck className="h-6 w-6" />
+            <div className="flex items-center gap-2.5 sm:gap-3">
+              <div className="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-xl border border-primary/40 bg-primary/10 text-primary shadow-[0_0_20px_rgba(56,189,248,0.2)] shrink-0">
+                <ShieldCheck className="h-5 w-5 sm:h-6 sm:w-6" />
               </div>
               <div className="flex flex-col">
                 <div className="flex items-center gap-2">
-                  <span className="font-display text-lg font-bold tracking-tight text-foreground">
+                  <span className="font-display text-base sm:text-lg font-bold tracking-tight text-foreground">
                     MAIL <span className="text-primary">DEFENDER</span>
                   </span>
-                  <span className="rounded-md border border-primary/30 bg-primary/10 px-1.5 py-0.5 text-[10px] font-mono font-semibold uppercase tracking-wider text-primary">
-                    PRO
-                  </span>
                 </div>
-                <span className="text-[11px] text-muted-foreground hidden sm:inline-block">
+                <span className="text-[10px] sm:text-[11px] text-muted-foreground hidden sm:inline-block">
                   AI Threat Detection & Header Forensic Engine
                 </span>
               </div>
             </div>
 
-            {/* Live Status Indicators */}
-            <div className="hidden lg:flex items-center gap-6 text-xs text-muted-foreground">
-              <div className="flex items-center gap-2 border-r border-border/80 pr-6">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                </span>
-                <span className="font-medium text-foreground">Engine Online</span>
-              </div>
-              <div className="flex items-center gap-2 border-r border-border/80 pr-6">
-                <Cpu className="h-3.5 w-3.5 text-primary" />
-                <span>AI Core: <strong className="text-foreground">Gemini 2.5 Flash</strong></span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Lock className="h-3.5 w-3.5 text-info" />
-                <span>VirusTotal API: <strong className="text-foreground font-mono">Ready</strong></span>
-              </div>
+            {/* Core Capability Badges */}
+            <div className="hidden lg:flex flex-wrap items-center gap-2 text-[11px] font-mono text-muted-foreground">
+              <span className="px-2.5 py-1 rounded-md border border-border/60 bg-background/50">Header Parser</span>
+              <span className="px-2.5 py-1 rounded-md border border-border/60 bg-background/50">SPF / DKIM Checks</span>
+              <span className="px-2.5 py-1 rounded-md border border-border/60 bg-background/50">VT Integration</span>
+              <span className="px-2.5 py-1 rounded-md border border-border/60 bg-background/50">PDF Export</span>
             </div>
 
             {/* Top Bar Actions */}
-            <div className="flex items-center gap-2.5">
+            <div className="flex items-center gap-2">
               <Button
                 type="button"
                 variant="outline"
                 size="sm"
                 onClick={loadSampleData}
-                className="hidden sm:inline-flex h-9 px-3 text-xs gap-1.5 border-border/80 bg-card/60 hover:bg-accent hover:border-primary/40"
+                className="h-8 sm:h-9 px-2.5 sm:px-3 text-[11px] sm:text-xs gap-1 sm:gap-1.5 border-border/80 bg-card/60 hover:bg-accent hover:border-primary/40"
               >
                 <Zap className="h-3.5 w-3.5 text-amber-400" />
-                Load Sample
+                <span className="hidden xs:inline">Load Sample</span>
+                <span className="xs:hidden">Sample</span>
               </Button>
 
               <Button
@@ -517,10 +504,10 @@ ${recommendedActions}`;
                 variant="outline"
                 size="sm"
                 onClick={handleReset}
-                className="h-9 px-3 text-xs gap-1.5 border-border/80 bg-card/60 hover:bg-accent"
+                className="h-8 sm:h-9 px-2.5 sm:px-3 text-[11px] sm:text-xs gap-1 sm:gap-1.5 border-border/80 bg-card/60 hover:bg-accent"
               >
                 <RotateCcw className="h-3.5 w-3.5" />
-                Reset
+                <span className="hidden xs:inline">Reset</span>
               </Button>
 
               <Button
@@ -528,7 +515,7 @@ ${recommendedActions}`;
                 variant="outline"
                 size="sm"
                 onClick={() => setIsLightMode((current) => !current)}
-                className="h-9 w-9 p-0 border-border/80 bg-card/60 hover:bg-accent"
+                className="h-8 w-8 sm:h-9 sm:w-9 p-0 border-border/80 bg-card/60 hover:bg-accent shrink-0"
                 aria-label="Toggle Theme"
               >
                 {isLightMode ? <Moon className="h-4 w-4 text-slate-700" /> : <Sun className="h-4 w-4 text-amber-300" />}
@@ -538,41 +525,41 @@ ${recommendedActions}`;
         </header>
 
         {/* Hero Section Banner */}
-        <section className="mx-auto max-w-[1500px] px-4 pt-6 md:px-8 xl:px-12">
-          <div className="hero-panel app-header flex flex-col justify-center rounded-2xl border border-border/80 bg-gradient-to-r from-card via-background to-card p-6 md:p-8 shadow-2xl relative overflow-hidden">
+        <section className="mx-auto max-w-[1500px] px-3 sm:px-4 pt-4 sm:pt-6 md:px-8 xl:px-12">
+          <div className="hero-panel app-header flex flex-col justify-center rounded-2xl border border-border/80 bg-gradient-to-r from-card via-background to-card p-4 sm:p-6 md:p-8 shadow-2xl relative overflow-hidden">
             <div className="hero-noise" />
-            <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-              <div className="space-y-3 max-w-3xl">
-                <div className="flex flex-wrap items-center gap-2.5">
-                  <div className="workspace-pill">
+            <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-4 sm:gap-6">
+              <div className="space-y-2.5 sm:space-y-3 max-w-3xl">
+                <div className="flex flex-wrap items-center gap-2">
+                  <div className="workspace-pill text-[9px] sm:text-[10px] px-2 py-0.5 sm:px-3 sm:py-1">
                     <span className="status-dot bg-primary text-primary" />
                     Security Analyst Terminal
                   </div>
-                  <span className="inline-flex items-center gap-1 text-[11px] font-mono text-muted-foreground bg-muted/50 px-2.5 py-1 rounded-full border border-border/60">
+                  <span className="inline-flex items-center gap-1 text-[10px] sm:text-[11px] font-mono text-muted-foreground bg-muted/50 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full border border-border/60">
                     <Terminal className="h-3 w-3 text-primary" /> EML / RFC 822 Forensics
                   </span>
                 </div>
-                <h1 className="text-2xl font-bold tracking-tight text-foreground md:text-4xl lg:text-4xl font-display">
+                <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight text-foreground font-display leading-tight">
                   Analyze Suspicious Emails with <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-info to-purple-400">AI & VirusTotal</span>
                 </h1>
-                <p className="text-sm leading-relaxed text-muted-foreground md:text-base max-w-2xl">
+                <p className="text-xs sm:text-sm md:text-base leading-relaxed text-muted-foreground max-w-2xl">
                   Inspect raw headers, extract IPs/domains, evaluate SPF/DKIM authentication, and produce comprehensive security threat assessments in real-time.
                 </p>
               </div>
 
               {/* Quick stats pills */}
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 shrink-0">
-                <div className="flex flex-col items-center justify-center p-3 rounded-xl border border-border/60 bg-card/40 backdrop-blur-md">
-                  <span className="text-xs text-muted-foreground">Auth Checks</span>
-                  <span className="text-sm font-semibold text-primary font-mono mt-0.5">SPF • DKIM</span>
+              <div className="grid grid-cols-3 gap-2 sm:gap-3 shrink-0 w-full lg:w-auto">
+                <div className="flex flex-col items-center justify-center p-2.5 sm:p-3 rounded-xl border border-border/60 bg-card/40 backdrop-blur-md text-center">
+                  <span className="text-[10px] sm:text-xs text-muted-foreground">Auth Checks</span>
+                  <span className="text-xs sm:text-sm font-semibold text-primary font-mono mt-0.5">SPF • DKIM</span>
                 </div>
-                <div className="flex flex-col items-center justify-center p-3 rounded-xl border border-border/60 bg-card/40 backdrop-blur-md">
-                  <span className="text-xs text-muted-foreground">Threat Intel</span>
-                  <span className="text-sm font-semibold text-info font-mono mt-0.5">VirusTotal API</span>
+                <div className="flex flex-col items-center justify-center p-2.5 sm:p-3 rounded-xl border border-border/60 bg-card/40 backdrop-blur-md text-center">
+                  <span className="text-[10px] sm:text-xs text-muted-foreground">Threat Intel</span>
+                  <span className="text-xs sm:text-sm font-semibold text-info font-mono mt-0.5">VirusTotal</span>
                 </div>
-                <div className="col-span-2 sm:col-span-1 flex flex-col items-center justify-center p-3 rounded-xl border border-border/60 bg-card/40 backdrop-blur-md">
-                  <span className="text-xs text-muted-foreground">Export Format</span>
-                  <span className="text-sm font-semibold text-emerald-400 font-mono mt-0.5">PDF & Text</span>
+                <div className="flex flex-col items-center justify-center p-2.5 sm:p-3 rounded-xl border border-border/60 bg-card/40 backdrop-blur-md text-center">
+                  <span className="text-[10px] sm:text-xs text-muted-foreground">Export Format</span>
+                  <span className="text-xs sm:text-sm font-semibold text-emerald-400 font-mono mt-0.5">PDF & Text</span>
                 </div>
               </div>
             </div>
@@ -580,7 +567,7 @@ ${recommendedActions}`;
         </section>
 
         {/* Main Work Area */}
-        <section className="mx-auto flex w-full max-w-[1500px] flex-col gap-6 px-4 py-6 md:px-8 xl:px-12">
+        <section className="mx-auto flex w-full max-w-[1500px] flex-col gap-6 px-3 sm:px-4 py-4 sm:py-6 md:px-8 xl:px-12">
           <div className="grid gap-6 xl:grid-cols-[1.4fr_1fr]">
             
             {/* Left Column: Intake & Header Breakdown & Report */}
@@ -594,12 +581,12 @@ ${recommendedActions}`;
                 onDrop={onDrop}
               >
                 <div className="section-topline flex items-center justify-between">
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-2.5 sm:gap-3">
                     <span className={sectionIconClass}>
                       <ScanSearch className="h-5 w-5 text-primary" />
                     </span>
                     <div>
-                      <p className="section-kicker text-xs uppercase tracking-widest text-muted-foreground font-semibold">Raw Message Input</p>
+                      <p className="section-kicker text-[10px] sm:text-xs uppercase tracking-widest text-muted-foreground font-semibold">Raw Message Input</p>
                       <h2 className={cardTitleClass}>Intake & Ingestion</h2>
                     </div>
                   </div>
@@ -607,9 +594,9 @@ ${recommendedActions}`;
                     variant="ghost"
                     size="sm"
                     onClick={loadSampleData}
-                    className="text-xs text-primary hover:text-primary hover:bg-primary/10 gap-1.5"
+                    className="text-xs text-primary hover:text-primary hover:bg-primary/10 gap-1.5 px-2 sm:px-3"
                   >
-                    <Zap className="h-3.5 w-3.5" /> Sample Email
+                    <Zap className="h-3.5 w-3.5" /> <span className="hidden sm:inline">Sample Email</span>
                   </Button>
                 </div>
 
@@ -661,11 +648,11 @@ ${recommendedActions}`;
                   </div>
                 </div>
 
-                <div className="flex flex-wrap items-center gap-3 pt-1">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-1 w-full">
                   <Button 
                     variant="signal" 
                     size="lg" 
-                    className="min-w-[180px] bg-primary hover:bg-primary/90 text-primary-foreground font-semibold shadow-[0_0_20px_rgba(56,189,248,0.25)] transition-all hover:scale-[1.02]" 
+                    className="w-full sm:w-auto min-w-0 sm:min-w-[180px] bg-primary hover:bg-primary/90 text-primary-foreground font-semibold shadow-[0_0_20px_rgba(56,189,248,0.25)] transition-all hover:scale-[1.02] justify-center" 
                     onClick={handleAnalyze} 
                     disabled={isAnalyzing || (!emailHeaders && !emailBody)}
                   >
@@ -682,7 +669,7 @@ ${recommendedActions}`;
                     )}
                   </Button>
 
-                  <div className="relative overflow-hidden inline-block">
+                  <div className="relative overflow-hidden w-full sm:w-auto">
                     <input
                       type="file"
                       accept=".eml,.txt"
@@ -694,7 +681,7 @@ ${recommendedActions}`;
                         }
                       }}
                     />
-                    <Button variant="panel" size="lg" className="min-w-[150px] border-border/80 bg-card hover:bg-accent text-foreground">
+                    <Button variant="panel" size="lg" className="w-full sm:w-auto min-w-0 sm:min-w-[150px] border-border/80 bg-card hover:bg-accent text-foreground justify-center">
                       <Mail className="h-4 w-4 text-primary" />
                       Upload EML File
                     </Button>
@@ -716,7 +703,7 @@ ${recommendedActions}`;
                   </div>
                   {headerDetails.length > 0 && (
                     <span className="text-xs font-mono text-info bg-info/10 border border-info/20 px-2.5 py-1 rounded-full">
-                      {headerDetails.length} Fields Extracted
+                      {headerDetails.length} Fields
                     </span>
                   )}
                 </div>
@@ -740,7 +727,7 @@ ${recommendedActions}`;
 
               {/* AI Report Card */}
               <section className="investigation-card report-card border border-border/80 bg-card/80 shadow-xl backdrop-blur-xl">
-                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                   <div className="section-topline flex items-center gap-3">
                     <span className={sectionIconClass}>
                       <FileText className="h-5 w-5 text-primary" />
@@ -751,19 +738,19 @@ ${recommendedActions}`;
                     </div>
                   </div>
 
-                  <div className="flex flex-wrap gap-2.5">
-                    <Button variant="panel" onClick={handleCopyReport} size="sm" className="h-9 px-3.5 text-xs border-border/80 bg-card hover:bg-accent" disabled={!aiReport}>
+                  <div className="flex items-center gap-2.5 w-full sm:w-auto">
+                    <Button variant="panel" onClick={handleCopyReport} size="sm" className="flex-1 sm:flex-none h-9 px-3.5 text-xs border-border/80 bg-card hover:bg-accent justify-center" disabled={!aiReport}>
                       <Copy className="h-3.5 w-3.5" />
                       Copy Text
                     </Button>
-                    <Button variant="signal" onClick={handleExportReport} size="sm" className="h-9 px-3.5 text-xs bg-primary hover:bg-primary/90 text-primary-foreground font-semibold" disabled={!aiReport}>
+                    <Button variant="signal" onClick={handleExportReport} size="sm" className="flex-1 sm:flex-none h-9 px-3.5 text-xs bg-primary hover:bg-primary/90 text-primary-foreground font-semibold justify-center" disabled={!aiReport}>
                       <Download className="h-3.5 w-3.5" />
                       Export PDF
                     </Button>
                   </div>
                 </div>
 
-                <div className="report-surface border border-border/70 rounded-xl p-5 bg-background/50">
+                <div className="report-surface border border-border/70 rounded-xl p-3.5 sm:p-5 bg-background/50">
                   {aiReport ? (
                     <div className="grid gap-5 lg:grid-cols-2">
                       <div className="report-block p-4 rounded-xl border border-border/60 bg-card/50">
@@ -857,24 +844,24 @@ ${recommendedActions}`;
                   </div>
                 </div>
 
-                <div className="score-shell flex flex-col items-center p-6 border border-border/70 rounded-2xl bg-background/40">
+                <div className="score-shell flex flex-col items-center p-4 sm:p-6 border border-border/70 rounded-2xl bg-background/40">
                   <div className="score-ring relative mb-4">
                     <div className="score-core flex flex-col items-center justify-center">
-                      <span className="score-range text-4xl font-bold font-display text-primary">{aiReport?.score ?? "0"}</span>
-                      <span className="score-caption text-[10px] uppercase font-mono tracking-widest text-muted-foreground mt-1">Threat Score</span>
+                      <span className="score-range text-3xl sm:text-4xl font-bold font-display text-primary">{aiReport?.score ?? "0"}</span>
+                      <span className="score-caption text-[9px] sm:text-[10px] uppercase font-mono tracking-widest text-muted-foreground mt-1">Threat Score</span>
                     </div>
                   </div>
 
                   <div className="space-y-2 text-center max-w-xs">
-                    <p className="text-lg font-bold tracking-tight text-foreground">{aiReport?.verdict || "Awaiting Analysis"}</p>
+                    <p className="text-base sm:text-lg font-bold tracking-tight text-foreground">{aiReport?.verdict || "Awaiting Analysis"}</p>
                     <p className="text-xs leading-relaxed text-muted-foreground">
                       {aiReport?.analystSummary ? aiReport.analystSummary.slice(0, 110) + "..." : "Risk Index measures SPF/DKIM integrity, domain reputation, and urgent phish language."}
                     </p>
                   </div>
 
-                  <div className="flex flex-wrap justify-center gap-2 mt-4 pt-4 border-t border-border/60 w-full">
+                  <div className="flex flex-wrap justify-center gap-1.5 sm:gap-2 mt-4 pt-4 border-t border-border/60 w-full">
                     {scoreTags.map(([text, tone]: any) => (
-                      <span key={text} className={`rounded-full border px-2.5 py-1 text-[10px] font-mono font-semibold tracking-wider uppercase ${tagClass[tone] || tagClass.Suspicious}`}>
+                      <span key={text} className={`rounded-full border px-2 sm:px-2.5 py-0.5 sm:py-1 text-[9px] sm:text-[10px] font-mono font-semibold tracking-wider uppercase ${tagClass[tone] || tagClass.Suspicious}`}>
                         {text}
                       </span>
                     ))}
@@ -899,9 +886,9 @@ ${recommendedActions}`;
                     authChecks.map(({ label, value, tone }) => {
                       const Icon = toneIconMap[tone] || AlertTriangle;
                       return (
-                        <div key={label} className="auth-row flex items-center justify-between p-3 rounded-xl border border-border/70 bg-background/50 hover:bg-accent/40 transition-colors">
+                        <div key={label} className="auth-row flex items-center justify-between p-2.5 sm:p-3 rounded-xl border border-border/70 bg-background/50 hover:bg-accent/40 transition-colors">
                           <span className="text-xs font-semibold text-foreground font-mono">{label}</span>
-                          <span className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[10px] font-mono font-bold uppercase tracking-wider ${statusClass[tone] || statusClass.muted}`}>
+                          <span className={`inline-flex items-center gap-1.5 rounded-full border px-2 sm:px-2.5 py-0.5 sm:py-1 text-[9px] sm:text-[10px] font-mono font-bold uppercase tracking-wider ${statusClass[tone] || statusClass.muted}`}>
                             <Icon className="h-3 w-3" />
                             {value}
                           </span>
@@ -938,7 +925,7 @@ ${recommendedActions}`;
 
                   {indicators.length > 0 ? (
                     indicators.map((item) => (
-                      <div key={`${item.label}-${item.query}-${item.value}`} className="indicator-row p-3 border-t border-border/60 flex flex-col gap-2">
+                      <div key={`${item.label}-${item.query}-${item.value}`} className="p-2.5 sm:p-3 border-t border-border/60 flex flex-col gap-2">
                         <div className="flex items-center justify-between">
                           <span className="indicator-label text-xs font-mono font-bold text-foreground">{item.label}</span>
                           <div className="flex items-center gap-1">
@@ -950,9 +937,9 @@ ${recommendedActions}`;
                           </div>
                         </div>
 
-                        <div className="flex items-center justify-between gap-2 bg-background/60 p-2 rounded-lg border border-border/60">
-                          <span className="truncate font-mono text-[11px] text-foreground/90 max-w-[200px] sm:max-w-[240px]">{item.value}</span>
-                          <Button variant="panel" size="sm" className="h-7 text-[10px] px-2 gap-1 border-border/80 hover:bg-accent shrink-0" asChild>
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-background/60 p-2 rounded-lg border border-border/60">
+                          <span className="truncate font-mono text-[11px] text-foreground/90 w-full sm:max-w-[240px] break-all">{item.value}</span>
+                          <Button variant="panel" size="sm" className="h-7 text-[10px] px-2.5 gap-1 border-border/80 hover:bg-accent shrink-0 self-start sm:self-auto" asChild>
                             <a href={`https://www.virustotal.com/gui/search/${encodeURIComponent(item.query)}`} target="_blank" rel="noopener noreferrer">
                               <ExternalLink className="h-3 w-3 text-primary" />
                               VT Check
@@ -1022,29 +1009,8 @@ ${recommendedActions}`;
       {/* Premium Dark Mode Footer */}
       <footer className="w-full border-t border-border/80 bg-card/60 backdrop-blur-xl mt-12 py-8 transition-colors">
         <div className="mx-auto max-w-[1500px] px-4 md:px-8 xl:px-12">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6 pb-6 border-b border-border/60">
-            {/* Left Brand info */}
-            <div className="flex items-center gap-3 text-left">
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-primary/40 bg-primary/10 text-primary">
-                <ShieldCheck className="h-5 w-5" />
-              </div>
-              <div>
-                <h3 className="font-display font-bold text-sm tracking-tight text-foreground">
-                  MAIL <span className="text-primary">DEFENDER</span>
-                </h3>
-                <p className="text-xs text-muted-foreground">
-                  Advanced AI Email Security & Forensic Threat Platform
-                </p>
-              </div>
-            </div>
-
-            {/* Core Capability Badges */}
-            <div className="flex flex-wrap items-center gap-2 text-[11px] font-mono text-muted-foreground">
-              <span className="px-2.5 py-1 rounded-md border border-border/60 bg-background/50">Header Parser</span>
-              <span className="px-2.5 py-1 rounded-md border border-border/60 bg-background/50">SPF / DKIM Checks</span>
-              <span className="px-2.5 py-1 rounded-md border border-border/60 bg-background/50">VT Integration</span>
-              <span className="px-2.5 py-1 rounded-md border border-border/60 bg-background/50">PDF Export</span>
-            </div>
+          <div className="flex flex-col items-center justify-center pb-6 border-b border-border/60 text-xs text-muted-foreground/80">
+            <p>AI can make mistakes, please double check responses.</p>
           </div>
 
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 text-xs text-muted-foreground">
