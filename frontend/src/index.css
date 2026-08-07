@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Sora:wght@500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -17,8 +17,8 @@
     --popover: 0 0% 6%;
     --popover-foreground: 210 16% 96%;
 
-    --primary: 190 90% 62%;
-    --primary-foreground: 210 35% 10%;
+    --primary: 6 85% 60%;
+    --primary-foreground: 0 0% 100%;
 
     --secondary: 0 0% 11%;
     --secondary-foreground: 210 14% 92%;
@@ -31,35 +31,35 @@
 
     --destructive: 357 83% 58%;
     --destructive-foreground: 0 0% 100%;
-    --danger: 2 84% 62%;
+    --danger: 6 85% 58%;
     --danger-foreground: 0 0% 100%;
     --warning: 42 94% 63%;
     --warning-foreground: 30 60% 10%;
     --success: 152 58% 48%;
     --success-foreground: 145 80% 96%;
-    --info: 205 88% 67%;
-    --info-foreground: 210 100% 98%;
+    --info: 14 80% 64%;
+    --info-foreground: 0 0% 100%;
 
     --border: 0 0% 16%;
     --input: 0 0% 18%;
-    --ring: 190 90% 62%;
+    --ring: 6 85% 60%;
 
     --radius: 1rem;
     --gradient-page:
-      radial-gradient(circle at 14% 12%, hsl(190 90% 62% / 0.08), transparent 22%),
-      radial-gradient(circle at 82% 16%, hsl(205 88% 67% / 0.06), transparent 20%),
+      radial-gradient(circle at 14% 12%, hsl(6 85% 60% / 0.08), transparent 22%),
+      radial-gradient(circle at 82% 16%, hsl(14 80% 64% / 0.06), transparent 20%),
       radial-gradient(circle at 50% 100%, hsl(152 58% 48% / 0.04), transparent 30%),
-      linear-gradient(180deg, hsl(0 0% 6%), hsl(0 0% 3%));
+      linear-gradient(180deg, hsl(0 0% 5%), hsl(0 0% 2%));
     --gradient-surface: linear-gradient(180deg, hsl(0 0% 8% / 0.94), hsl(0 0% 5% / 0.98));
     --gradient-surface-strong: linear-gradient(180deg, hsl(0 0% 9% / 0.98), hsl(0 0% 5% / 0.99));
     --gradient-hero:
-      radial-gradient(circle at 18% 18%, hsl(190 90% 62% / 0.12), transparent 24%),
-      radial-gradient(circle at 82% 22%, hsl(205 88% 67% / 0.1), transparent 20%),
+      radial-gradient(circle at 18% 18%, hsl(6 85% 60% / 0.12), transparent 24%),
+      radial-gradient(circle at 82% 22%, hsl(14 80% 64% / 0.1), transparent 20%),
       linear-gradient(135deg, hsl(0 0% 9%), hsl(0 0% 5%));
-    --gradient-signal: linear-gradient(135deg, hsl(190 90% 62%), hsl(205 88% 67%), hsl(210 20% 90%));
+    --gradient-signal: linear-gradient(135deg, hsl(6 85% 60%), hsl(14 80% 64%), hsl(0 0% 92%));
     --shadow-panel: 0 36px 90px -34px hsl(0 0% 0% / 0.85);
-    --shadow-signal: 0 18px 46px -18px hsl(190 90% 62% / 0.22);
-    --shadow-danger: 0 20px 42px -22px hsl(2 84% 62% / 0.28);
+    --shadow-signal: 0 18px 46px -18px hsl(6 85% 60% / 0.25);
+    --shadow-danger: 0 20px 42px -22px hsl(6 85% 58% / 0.28);
 
   }
 
@@ -75,8 +75,8 @@
     --popover: 0 0% 100%;
     --popover-foreground: 220 28% 9%;
 
-    --primary: 190 86% 42%;
-    --primary-foreground: 195 90% 8%;
+    --primary: 6 78% 50%;
+    --primary-foreground: 0 0% 100%;
 
     --secondary: 210 22% 92%;
     --secondary-foreground: 220 24% 14%;
@@ -84,38 +84,38 @@
     --muted: 210 20% 91%;
     --muted-foreground: 215 13% 43%;
 
-    --accent: 195 28% 92%;
+    --accent: 12 28% 92%;
     --accent-foreground: 220 24% 14%;
 
     --destructive: 357 74% 48%;
     --destructive-foreground: 0 0% 100%;
-    --danger: 2 74% 50%;
+    --danger: 6 78% 50%;
     --danger-foreground: 0 0% 100%;
     --warning: 38 90% 48%;
     --warning-foreground: 32 80% 12%;
     --success: 154 62% 35%;
     --success-foreground: 150 90% 96%;
-    --info: 204 78% 44%;
-    --info-foreground: 210 100% 98%;
+    --info: 14 74% 48%;
+    --info-foreground: 0 0% 100%;
 
     --border: 215 18% 82%;
     --input: 215 18% 76%;
-    --ring: 190 86% 42%;
+    --ring: 6 78% 50%;
 
     --gradient-page:
-      radial-gradient(circle at 14% 12%, hsl(190 86% 42% / 0.08), transparent 24%),
-      radial-gradient(circle at 82% 16%, hsl(204 78% 44% / 0.07), transparent 22%),
+      radial-gradient(circle at 14% 12%, hsl(6 78% 50% / 0.08), transparent 24%),
+      radial-gradient(circle at 82% 16%, hsl(14 74% 48% / 0.07), transparent 22%),
       linear-gradient(180deg, hsl(0 0% 100%), hsl(210 25% 96%));
     --gradient-surface: linear-gradient(180deg, hsl(0 0% 100%), hsl(0 0% 100%));
     --gradient-surface-strong: linear-gradient(180deg, hsl(0 0% 100%), hsl(0 0% 100%));
     --gradient-hero:
-      radial-gradient(circle at 18% 18%, hsl(190 86% 42% / 0.14), transparent 24%),
-      radial-gradient(circle at 82% 22%, hsl(204 78% 44% / 0.12), transparent 20%),
+      radial-gradient(circle at 18% 18%, hsl(6 78% 50% / 0.14), transparent 24%),
+      radial-gradient(circle at 82% 22%, hsl(14 74% 48% / 0.12), transparent 20%),
       linear-gradient(135deg, hsl(0 0% 100%), hsl(0 0% 100%));
-    --gradient-signal: linear-gradient(135deg, hsl(190 86% 47%), hsl(204 78% 50%), hsl(210 18% 98%));
+    --gradient-signal: linear-gradient(135deg, hsl(6 78% 50%), hsl(14 74% 48%), hsl(0 0% 98%));
     --shadow-panel: 0 32px 80px -42px hsl(215 30% 20% / 0.38);
-    --shadow-signal: 0 18px 40px -20px hsl(190 86% 42% / 0.32);
-    --shadow-danger: 0 20px 42px -24px hsl(2 74% 50% / 0.24);
+    --shadow-signal: 0 18px 40px -20px hsl(6 78% 50% / 0.32);
+    --shadow-danger: 0 20px 42px -24px hsl(6 78% 50% / 0.24);
   }
 }
 
@@ -434,7 +434,7 @@
 
   .data-value {
     padding: 0.9rem 1rem;
-    font-family: "IBM Plex Mono", monospace;
+    font-family: "JetBrains Mono", monospace;
     font-size: 0.84rem;
     line-height: 1.7;
     color: hsl(var(--muted-foreground));
@@ -503,7 +503,7 @@
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-    font-family: "Sora", sans-serif;
+    font-family: "Inter", sans-serif;
     font-size: 2.5rem;
     font-weight: 700;
     letter-spacing: -0.06em;
@@ -679,7 +679,7 @@
     border: 1px solid hsl(var(--border) / 0.75);
     background: hsl(var(--muted));
     padding: 0.625rem;
-    font-family: "IBM Plex Mono", monospace;
+    font-family: "JetBrains Mono", monospace;
     font-size: 0.75rem;
     color: hsl(var(--muted-foreground));
     word-break: break-all;

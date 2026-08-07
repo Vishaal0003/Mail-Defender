@@ -72,9 +72,9 @@ export default {
         sm: "calc(var(--radius) - 4px)",
       },
       fontFamily: {
-        display: ["Sora", "sans-serif"],
+        display: ["Inter", "sans-serif"],
         body: ["Inter", "sans-serif"],
-        mono: ["IBM Plex Mono", "monospace"],
+        mono: ["JetBrains Mono", "monospace"],
       },
       boxShadow: {
         panel: "var(--shadow-panel)",
